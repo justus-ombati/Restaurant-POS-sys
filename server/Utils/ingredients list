@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Chicken",
+        "pricePerUnit": 599.99,
+        "category": "Meat",
+        "amount": 35
+    },
+    {
+        "name": "Onion",
+        "pricePerUnit": 50.0,
+        "category": "Vegetable",
+        "amount": 15
+    },
+    {
+        "name": "Garlic",
+        "pricePerUnit": 20.0,
+        "category": "Vegetable",
+        "amount":15
+    },
+    {
+        "name": "Bell Pepper",
+        "pricePerUnit": 100.0,
+        "category": "Vegetable",
+        "amount": 1
+    },
+    {
+        "name": "Tomato",
+        "pricePerUnit": 75.0,
+        "category": "Vegetable",
+        "amount": 5
+    },
+    {
+        "name": "Salt",
+        "pricePerUnit": 40.0,
+        "category": "Spices",
+        "amount": 5
+    },
+    {
+        "name": "Pepper",
+        "pricePerUnit": 15.0,
+        "category": "Spices",
+        "amount": 0.5
+    },
+    {
+        "name": "Olive Oil",
+        "pricePerUnit": 250.0,
+        "category": "Oil",
+        "amount": 20
+    },
+    {
+        "name": "Pasta",
+        "pricePerUnit": 150.0,
+        "category": "Grains",
+        "amount": 10
+    },
+    {
+        "name": "Parmesan Cheese",
+        "pricePerUnit": 300.0,
+        "category": "Dairy",
+        "amount": 2
+    }
+]
