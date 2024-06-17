@@ -2,12 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
 dotenv.config({ path: './config.env' });
 
-const ingredientRouter = require('./Router/ingredientRouter');
-const recipeRouter = require('./Router/recipeRouter');
-const reportRouter = require('./Router/reportRouter');
 const userRouter = require('./Router/userRouter');
 
 const CustomError = require('./Utils/customError');
@@ -23,15 +19,14 @@ process.on('uncaughtException', (err) => {
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
-// Routes
-app.use('/ingredients', ingredientRouter);
-app.use('/recipes', recipeRouter);
-app.use('/reports', reportRouter);
-app.use('/users', userRouter);
-
+//Routes
+app.use('/user', userRouter);
+app.get('/ping', (req, res) => {
+    res.send('pong');
+});
 // Last route for all other URL routes
 app.all('*', (req, res, next) => {
     const err = new CustomError(`Can't find ${req.originalUrl} on the server!`, 404);

@@ -1,0 +1,8 @@
+[
+    {
+        "idNumber": "1001",
+        "name": "Admin",
+        "pin": "1234",
+        "role": "admin"
+    }
+]
