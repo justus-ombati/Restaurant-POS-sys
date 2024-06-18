@@ -16,12 +16,12 @@ const ingredientSchema = new mongoose.Schema({
     amount: {
         type: Number,
         required: [true, 'Please provide the amount of the ingredient'],
-        min: [0, 'Amount cannot be a negative figure']
+        min: [1, 'Amount cannot be a 0']
     },
     pricePerUnit: {
         type: Number,
         required: [true, 'Please provide the price per unit of the ingredient'],
-        min: [0, 'Price cannot be a negative figure']
+        min: [0, 'Price cannot be a 0']
     }
 }, { timestamps: true });
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../Controllers/userController');
-const {authenticate} = require('../Middlewares/authController')
+const {authenticate} = require('../Middlewares/authentication')
 const checkPermission = require('../Middlewares/checkPermission');
 
 // Get user details

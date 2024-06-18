@@ -61,11 +61,9 @@ exports.register = asyncErrorHandler(async (req, res, next) => {
             role
         });
         console.log(newUser)
-        const token = signToken(newUser._id);
 
         res.status(201).json({
             status: 'success',
-            token,
             user: {
                 id: newUser._id,
                 idNumber: newUser.idNumber,

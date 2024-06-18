@@ -1,26 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const authenticate = require('../Controllers/authController').authenticate;
-const ingController = require('../Controllers/ingController');
-
-// Middleware to check if user is admin
-const checkAdmin = (req, res, next) => {
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ error: 'Unauthorized access' });
-    }
-    next();
-};
+const {authenticate} = require('../Middlewares/authentication');
+const checkPermission = require('../Middlewares/checkPermission');
+const ingredientController = require('../Controllers/ingredientController');
 
 // Apply authentication middleware to all routes
 router.use(authenticate);
 
 // Routes accessible only by admins
-router.post('/addIngredient', checkAdmin, ingController.addIngredient);
-router.delete('/deleteIngredient/:id', checkAdmin, ingController.deleteIngredient);
-router.patch('/updateIngredient/:id', checkAdmin, ingController.updateIngredient);
+router.post('/', checkPermission('manageInventory'), ingredientController.createIngredient);
+router.delete('/:id', checkPermission('manageInventory'), ingredientController.deleteIngredient);
+router.patch('/:id', checkPermission('manageInventory'), ingredientController.updateIngredient);
 
 // Routes accessible by both admins and chefs
-router.get('/getAllIngredients', ingController.getAllIngredients);
-router.get('/getIngredient/:id', ingController.getIngredient);
+router.get('/', ingredientController.getAllIngredients);
+router.get('/:id', ingredientController.getIngredient);
 
 module.exports = router;
