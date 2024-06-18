@@ -13,26 +13,22 @@ const userSchema = new mongoose.Schema({
     },
     pin: {
         type: String,
-        required: [true, 'Please provide a pin'],
+        required: [true, 'Please provide a PIN'],
+        minlength: 4,
+        maxlength: 4,
         validate: {
-            validator: function (value) {
-                // This validation will only run on save and create
-                return value.length === 60 || /^\d{4}$/.test(value);
+            validator: function(val) {
+                return /^\d{4}$/.test(val);
             },
-            message: 'PIN must be a valid 4-digit number or a hashed value'
+            message: 'PIN should be a 4-digit number'
         }
     },
     role: {
         type: String,
         enum: ['admin', 'manager', 'kitchen', 'waitstaff'],
         required: [true, 'Please provide a role']
-    },
-    createdAt: { 
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: { type: Date, default: Date.now }
-});
+    }
+}, { timestamps: true });
 
 // userSchema.pre('save', async function(next) {
 //     if (!this.isModified('pin')) return next();
