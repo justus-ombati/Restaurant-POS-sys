@@ -21,13 +21,14 @@ const foodSchema = new Schema({
     quantity: {
       type: Number,
       required: [true, 'Ingredient quantity is required'],
-      min: [0, 'Ingredient quantity must be at least 0']
+      min: [1, 'Ingredient quantity must be at least 1']
     }
   }],
   cost: {
     type: Number,
     required: [true, 'Cost is required'],
-    min: [0, 'Cost must be at least 0']
+    min: [0, 'Cost must be at least 0'],
+    default: 0
   },
   sellingPrice: {
     type: Number,
