@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const foodController = require('../Controllers/foodController');
 const { authenticate } = require('../Middlewares/authentication');
-const checkPermission = require('../Middleware/checkPermission');
+const checkPermission = require('../Middlewares/checkPermission');
 
 router.use(authenticate);
 // Routes requiring 'manageFood' permission

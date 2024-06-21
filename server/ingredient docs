@@ -1,0 +1,176 @@
+{
+    "status": "success",
+    "ingredientsAvailable": 17,
+    "data": [
+        {
+            "_id": "667186edfeb93f3550207710",
+            "name": "Tomatoes",
+            "category": "Vegetable",
+            "amount": 50,
+            "pricePerUnit": 50,
+            "createdAt": "2024-06-18T13:09:01.616Z",
+            "updatedAt": "2024-06-18T13:53:27.324Z",
+            "__v": 0
+        },
+        {
+            "_id": "6671871ffeb93f3550207714",
+            "name": "Milk",
+            "category": "Dairy",
+            "amount": 200,
+            "pricePerUnit": 50,
+            "createdAt": "2024-06-18T13:09:51.948Z",
+            "updatedAt": "2024-06-18T13:09:51.948Z",
+            "__v": 0
+        },
+        {
+            "_id": "66718b76910cfca7953d9951",
+            "name": "Olive Oil",
+            "category": "Oil",
+            "amount": 30,
+            "pricePerUnit": 1200,
+            "createdAt": "2024-06-18T13:28:22.818Z",
+            "updatedAt": "2024-06-18T13:28:22.818Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe05aa6aa7a3923db604",
+            "name": "Garlic",
+            "category": "Vegetable",
+            "amount": 50,
+            "pricePerUnit": 300,
+            "createdAt": "2024-06-21T04:13:57.372Z",
+            "updatedAt": "2024-06-21T04:13:57.372Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe13aa6aa7a3923db608",
+            "name": "Chicken Breast",
+            "category": "Meat",
+            "amount": 20,
+            "pricePerUnit": 800,
+            "createdAt": "2024-06-21T04:14:11.884Z",
+            "updatedAt": "2024-06-21T04:14:11.884Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe23aa6aa7a3923db60c",
+            "name": "Basmati Rice",
+            "category": "Grain",
+            "amount": 100,
+            "pricePerUnit": 200,
+            "createdAt": "2024-06-21T04:14:27.056Z",
+            "updatedAt": "2024-06-21T04:14:27.056Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe2caa6aa7a3923db610",
+            "name": "Soy Sauce",
+            "category": "Condiment",
+            "amount": 40,
+            "pricePerUnit": 150,
+            "createdAt": "2024-06-21T04:14:36.865Z",
+            "updatedAt": "2024-06-21T04:14:36.865Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe37aa6aa7a3923db614",
+            "name": "Sugar",
+            "category": "Sweetener",
+            "amount": 60,
+            "pricePerUnit": 50,
+            "createdAt": "2024-06-21T04:14:47.506Z",
+            "updatedAt": "2024-06-21T04:14:47.506Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe42aa6aa7a3923db618",
+            "name": "Tomato Paste",
+            "category": "Condiment",
+            "amount": 25,
+            "pricePerUnit": 100,
+            "createdAt": "2024-06-21T04:14:58.800Z",
+            "updatedAt": "2024-06-21T04:14:58.800Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe54aa6aa7a3923db61c",
+            "name": "Ground Beef",
+            "category": "Meat",
+            "amount": 30,
+            "pricePerUnit": 700,
+            "createdAt": "2024-06-21T04:15:16.405Z",
+            "updatedAt": "2024-06-21T04:15:16.405Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe5faa6aa7a3923db620",
+            "name": "Butter",
+            "category": "Dairy",
+            "amount": 20,
+            "pricePerUnit": 500,
+            "createdAt": "2024-06-21T04:15:27.657Z",
+            "updatedAt": "2024-06-21T04:15:27.657Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe69aa6aa7a3923db624",
+            "name": "Fresh Basil",
+            "category": "Herb",
+            "amount": 10,
+            "pricePerUnit": 200,
+            "createdAt": "2024-06-21T04:15:37.643Z",
+            "updatedAt": "2024-06-21T04:15:37.643Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe76aa6aa7a3923db628",
+            "name": "Mozzarella Cheese",
+            "category": "Dairy",
+            "amount": 15,
+            "pricePerUnit": 900,
+            "createdAt": "2024-06-21T04:15:50.145Z",
+            "updatedAt": "2024-06-21T04:15:50.145Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe80aa6aa7a3923db62c",
+            "name": "Black Pepper",
+            "category": "Spice",
+            "amount": 50,
+            "pricePerUnit": 300,
+            "createdAt": "2024-06-21T04:16:00.785Z",
+            "updatedAt": "2024-06-21T04:16:00.785Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe8baa6aa7a3923db630",
+            "name": "Honey",
+            "category": "Sweetener",
+            "amount": 20,
+            "pricePerUnit": 400,
+            "createdAt": "2024-06-21T04:16:11.484Z",
+            "updatedAt": "2024-06-21T04:16:11.484Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fe95aa6aa7a3923db634",
+            "name": "Red Wine Vinegar",
+            "category": "Condiment",
+            "amount": 10,
+            "pricePerUnit": 250,
+            "createdAt": "2024-06-21T04:16:21.834Z",
+            "updatedAt": "2024-06-21T04:16:21.834Z",
+            "__v": 0
+        },
+        {
+            "_id": "6674fea0aa6aa7a3923db638",
+            "name": "Salmon Fillet",
+            "category": "Fish",
+            "amount": 15,
+            "pricePerUnit": 1000,
+            "createdAt": "2024-06-21T04:16:32.273Z",
+            "updatedAt": "2024-06-21T04:16:32.273Z",
+            "__v": 0
+        }
+    ]
+}

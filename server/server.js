@@ -7,6 +7,7 @@ dotenv.config({ path: './config.env' });
 const userRouter = require('./Router/userRouter');
 const ingredientRouter = require('./Router/ingredientRouter');
 const foodRouter = require('./Router/foodRouter');
+const specialFoodRouter = require('./Router/specialFoodRouter');
 
 const CustomError = require('./Utils/customError');
 const globalErrorHandler = require('./Controllers/errorController');
@@ -28,6 +29,8 @@ app.use(cors());
 app.use('/user', userRouter);
 app.use('/ingredient', ingredientRouter);
 app.use('/food', foodRouter);
+app.use('/specialFood', specialFoodRouter);
+
 app.get('/ping', (req, res) => {
     res.send('pong');
 });
