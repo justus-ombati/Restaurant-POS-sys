@@ -5,8 +5,8 @@ const orderItemSchema = new Schema({
   itemType: {
     type: String,
     required: true,
-    enum: ['Food', 'SpecialRecipe'],
-    message: 'Item type must be either Food or SpecialRecipe'
+    enum: ['Food', 'SpecialFood'],
+    message: 'Item type must be either Food or SpecialFood'
   },
   item: {
     type: Schema.Types.ObjectId,
@@ -66,10 +66,10 @@ orderSchema.pre('save', async function(next) {
       if (food) {
         total += food.sellingPrice * item.quantity;
       }
-    } else if (item.itemType === 'SpecialRecipe') {
-      const specialRecipe = await mongoose.model('SpecialRecipe').findById(item.item);
-      if (specialRecipe) {
-        total += specialRecipe.sellingPrice * item.quantity;
+    } else if (item.itemType === 'SpecialFood') {
+      const specialFood = await mongoose.model('SpecialFood').findById(item.item);
+      if (specialFood) {
+        total += specialFood.sellingPrice * item.quantity;
       }
     }
   }
