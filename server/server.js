@@ -9,6 +9,7 @@ const ingredientRouter = require('./Router/ingredientRouter');
 const foodRouter = require('./Router/foodRouter');
 const specialFoodRouter = require('./Router/specialFoodRouter');
 const orderRouter = require('./Router/orderRouter');
+const salesRouter = require('./Router/salesRouter')
 
 const CustomError = require('./Utils/customError');
 const globalErrorHandler = require('./Controllers/errorController');
@@ -32,6 +33,7 @@ app.use('/ingredient', ingredientRouter);
 app.use('/food', foodRouter);
 app.use('/specialFood', specialFoodRouter);
 app.use('/order', orderRouter);
+app.use('/sales', salesRouter);
 
 app.get('/ping', (req, res) => {
     res.send('pong');

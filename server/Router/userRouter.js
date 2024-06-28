@@ -6,6 +6,6 @@ const checkPermission = require('../Middlewares/checkPermission');
 
 // Get user details
 router.post('/login', userController.login);
-router.post('/register', authenticate, checkPermission('createUser'), userController.register);
+router.post('/register', authenticate, checkPermission('manageUser'), userController.register);
 
 module.exports = router;

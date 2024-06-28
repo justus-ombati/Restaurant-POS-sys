@@ -7,9 +7,9 @@ const checkPermission = require('../Middlewares/checkPermission');
 router.use(authenticate);
 
 // Routes requiring 'manageOrders' permission
-router.post('/', checkPermission('manageOrders'), orderController.createOrder);
-router.delete('/:id', checkPermission('manageOrders'), orderController.deleteOrder);
-router.patch('/:id', checkPermission('manageOrders'), orderController.updateOrder);
+router.post('/', checkPermission('createOrder'), orderController.createOrder);
+router.delete('/:id', checkPermission('deleteOrder'), orderController.deleteOrder);
+router.patch('/:id', checkPermission('updateOrder'), orderController.updateOrder);
 
 // Routes accessible by all users
 router.get('/', orderController.getAllOrders);

@@ -1,23 +1,33 @@
 const User = require('../Models/userModel');
-const roles = require('../config/roles');
+const Role = require('../Models/roleModel');
 const CustomError = require('../Utils/customError');
 
 const checkPermission = (action) => {
     return async (req, res, next) => {
-        const user = await User.findById(req.user.id);
+        try {
+            const user = await User.findById(req.user.id);
+            
+            if (!user) {
+                return next(new CustomError('User not found', 404));
+            }
 
-        if (!user) {
-            return next(new CustomError('User not found', 404));
+            const userRole = user.role;
+            const role = await Role.findOne({ name: userRole });
+
+            if (!role) {
+                return next(new CustomError('Role not found', 404));
+            }
+
+            const permissions = role.permissions;
+
+            if (!permissions.includes(action)) {
+                return next(new CustomError('You do not have permission to perform this action', 403));
+            }
+
+            next();
+        } catch (error) {
+            next(error);
         }
-
-        const userRole = user.role;
-        const permissions = roles[userRole];
-
-        if (!permissions.includes(action)) {
-            return next(new CustomError('You do not have permission to perform this action', 403));
-        }
-
-        next();
     };
 };
 

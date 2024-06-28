@@ -5,24 +5,18 @@ const salesSchema = new Schema({
   orderId: {
     type: Schema.Types.ObjectId,
     ref: 'Order',
-    required: [true, 'Order ID is required']
-  },
-  date: {
-    type: Date,
-    required: [true, 'Date is required'],
-    default: Date.now
+    required: [true, 'Order ID is required'],
   },
   totalAmount: {
     type: Number,
-    required: [true, 'Total amount is required'],
     min: [0, 'Total amount must be at least 0']
   },
   profit: {
     type: Number,
-    required: [true, 'Profit is required'],
+    default: 0,
     min: [0, 'Profit must be at least 0']
   }
-});
+}, { timestamps: true });
 
 // Pre-save hook to calculate profit
 salesSchema.pre('save', async function(next) {
@@ -40,10 +34,10 @@ salesSchema.pre('save', async function(next) {
       if (food) {
         cost += food.cost * item.quantity;
       }
-    } else if (item.itemType === 'SpecialRecipe') {
-      const specialRecipe = await mongoose.model('SpecialRecipe').findById(item.item);
-      if (specialRecipe) {
-        cost += specialRecipe.cost * item.quantity;
+    } else if (item.itemType === 'SpecialFood') {
+      const specialFood = await mongoose.model('SpecialFood').findById(item.item);
+      if (specialFood) {
+        cost += specialFood.cost * item.quantity;
       }
     }
   }
