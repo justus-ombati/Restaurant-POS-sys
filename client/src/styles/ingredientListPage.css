@@ -1,0 +1,63 @@
+
+.ingredients-page {
+    padding: 20px;
+  }
+  
+  .ingredients-page h1 {
+    margin-bottom: 20px;
+  }
+  .content-div{
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    border-radius: 15px;
+    max-height: 100vh;
+    overflow: auto;
+  }
+  .lables-div{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    border-radius: 10px;
+  }
+  .ingID-lbl, .ingName-lbl, .action-lbl {
+    padding: 5px;
+    border-right: 2px solid#ddd;
+  }
+  .ingID-lbl{
+    flex: 1;
+    min-width: 30%; 
+  }
+  .ingName-lbl{
+    flex: 2;
+    min-width: 40%; 
+  }
+  .action-lbl{
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the right */
+    margin: 10px 0; /* Adds some margin for spacing */
+  }
+  .addIng-btn {
+    padding: 10px 20px;
+    background-color: #0056b3 ;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+    right: 0;
+  }
+  
+  .addIng-btn:hover {
+    background-color: #007bff;
+  }

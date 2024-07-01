@@ -1,24 +1,45 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import IngredientListPage from './pages/IngredientListPage';
+import LoginPage from './pages/LoginPage';
+import Header from './components/Header';
 
 function App() {
+  const [user, setUser] = useState(null); // Initially, no user is logged in
+  const [backendData, setBackendData] = useState([{}]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/")
+      .then(response => response.json())
+      .then(data => setBackendData(data))
+      .catch(error => console.error('Error fetching data:', error));
+
+    // Retrieve the user from local storage on app load
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header role={user ? user.role : ''} />
+        <h1 className='app-heading'>Restaurant POS</h1>
+        <div className="App-content">
+          <Routes>
+            <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/ingredientlist" element={<IngredientListPage />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 

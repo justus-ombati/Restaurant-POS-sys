@@ -1,0 +1,80 @@
+/* Modal overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Modal container */
+  .modal {
+    background: white;
+    border-radius: 5px;
+    width: 300px;
+    max-width: 100%;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Modal types */
+  .modal.alert {
+    border-left: 5px solid #f44336;
+  }
+  
+  .modal.confirmation {
+    border-left: 5px solid #2196F3;
+  }
+  
+  .modal.error {
+    border-left: 5px solid #f44336;
+    color: #f44336;
+  }
+  
+  .modal.info {
+    border-left: 5px solid #2196F3;
+  }
+  
+  .modal.warning {
+    border-left: 5px solid #ff9800;
+  }
+  
+  .modal.success {
+    border-left: 5px solid #4CAF50;
+  }
+  
+  /* Modal header */
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+  }
+  
+  .close-button {
+    font-size: 100%;
+    font-weight: bolder;
+    cursor: pointer;
+  }
+  
+  /* Modal body */
+  .modal-body {
+    margin-bottom: 20px;
+  }
+  
+  /* Modal footer */
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  

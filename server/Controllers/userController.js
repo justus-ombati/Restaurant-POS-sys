@@ -19,7 +19,7 @@ exports.login = asyncErrorHandler(async (req, res, next) => {
 
     if (!user) {
         console.log('User not found');
-        return next(new CustomError("User with ID does not exist!", 400));
+        return next(new CustomError("User with ID does not exist!", 404));
     }
 
     console.log('Stored Pin:', user.pin);

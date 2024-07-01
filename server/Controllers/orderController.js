@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Order = require('../Models/orderModel');
 const Food = require('../Models/foodModel');
 const SpecialFood = require('../Models/specialFoodModel');
+const Ingredient = require('../Models/ingredientModel');
 const asyncErrorHandler = require('../Utils/asyncErrorHandler');
 const CustomError = require('../Utils/customError');
 
@@ -142,6 +143,63 @@ exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
   res.status(200).json({
       status: 'success',
       data: order
+  });
+});
+
+// Complete preparation and update ingredients
+exports.completePrep = asyncErrorHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  // Find the order by ID
+  const order = await Order.findById(id).populate('items.item');
+
+  if (!order) {
+    return next(new CustomError('Order not found!', 404));
+  }
+  if (order.status === 'Ready'){
+    return next(new CustomError('Order is already Prepared.'))
+  }
+
+  // Update the order status to 'Ready'
+  order.status = 'Ready';
+  await order.save();
+
+  // Function to deduct ingredient quantities
+  const deductIngredients = async (item) => {
+    if (item.itemType === 'Food') {
+      const food = await Food.findById(item.item);
+      if (food) {
+        for (const ingredient of food.ingredients) {
+          const ingredientRecord = await Ingredient.findById(ingredient.ingredient);
+          if (ingredientRecord) {
+            ingredientRecord.amount -= ingredient.quantity * item.quantity;
+            await ingredientRecord.save();
+          }
+        }
+      }
+    } else if (item.itemType === 'SpecialFood') {
+      const specialFood = await SpecialFood.findById(item.item);
+      if (specialFood) {
+        for (const ingredient of specialFood.ingredients) {
+          const ingredientRecord = await Ingredient.findById(ingredient.ingredient);
+          if (ingredientRecord) {
+            ingredientRecord.amount -= ingredient.quantity * item.quantity;
+            await ingredientRecord.save();
+          }
+        }
+      }
+    }
+  };
+
+  // Deduct ingredients for each item in the order
+  for (const item of order.items) {
+    await deductIngredients(item);
+  }
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Order preparation completed and ingredients updated',
+    data: order
   });
 });
 
