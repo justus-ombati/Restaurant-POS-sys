@@ -1,0 +1,46 @@
+.order-entry-page {
+    padding: 20px;
+  }
+  
+  .order-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .food-lists {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .special-foods, .regular-foods {
+    width: 45%;
+  }
+  
+  .current-order {
+    margin-top: 20px;
+  }
+  
+  .current-order table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .current-order table th, .current-order table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .current-order table th {
+    background-color: #f2f2f2;
+  }
+  
+  .order-total {
+    margin-bottom: 20px;
+  }
+  
+  .order-total label {
+    font-weight: bold;
+  }
+  
