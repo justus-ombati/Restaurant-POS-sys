@@ -10,8 +10,10 @@ const Header = ({ role }) => {
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/inventory">Inventory</Link></li>
           <li><Link to="/menu">Menu</Link></li>
-          <li><Link to="/orders">Orders</Link></li>
+          <li><Link to="/order">Order</Link></li>
           <li><Link to="/profile">Profile</Link></li>
+          <li><Link to="/orders">Orders</Link></li>
+
           {role === 'admin' && (
             <>
               <li><Link to="/management">Management</Link></li>

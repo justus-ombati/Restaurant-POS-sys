@@ -13,7 +13,7 @@ const Button = ({ type, label, onClick, className, ...props }) => {
 };
 
 Button.propTypes = {
-  type: PropTypes.oneOf(['save', 'delete', 'cancel', 'confirm', 'add', 'remove', 'submit', 'close']).isRequired,
+  type: PropTypes.oneOf(['save', 'delete', 'cancel', 'confirm', 'add', 'remove', 'submit', 'close', 'view']).isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   className: PropTypes.string,

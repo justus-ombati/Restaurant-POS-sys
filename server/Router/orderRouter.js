@@ -10,8 +10,10 @@ router.use(authenticate);
 router.post('/', checkPermission('createOrder'), orderController.createOrder);
 router.delete('/:id', checkPermission('deleteOrder'), orderController.deleteOrder);
 router.patch('/:id', checkPermission('updateOrder'), orderController.updateOrder);
+router.patch('/confirmOrder/:id', checkPermission('updateOrder'), orderController.confirmOrder);
 router.patch('/completePrep/:id', checkPermission('updateOrder'), orderController.completePrep);
-
+router.patch('/cancelOrder/:id', checkPermission('cancelOrder'), orderController.cancelOrder);
+router.patch('/completePayment/:id', checkPermission('completePayment'), orderController.completePayment);
 
 // Routes accessible by all users
 router.get('/', orderController.getAllOrders);

@@ -1,0 +1,31 @@
+.order-detail-page {
+    padding: 20px;
+  }
+  
+  .order-info, .order-details, .order-actions {
+    margin-bottom: 20px;
+  }
+  
+  .order-info p, .order-details p {
+    margin: 5px 0;
+  }
+  
+  .order-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .order-details table, .order-details th, .order-details td {
+    border: 1px solid #ddd;
+  }
+  
+  .order-details th, .order-details td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .order-actions button {
+    margin-right: 10px;
+  }
+  

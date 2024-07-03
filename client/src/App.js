@@ -5,6 +5,8 @@ import IngredientListPage from './pages/IngredientListPage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
 import OrderEntryPage from './pages/OrderEntryPage';
+import OrderListPage from './pages/OrderListPage';
+import OrderDetailPage from './pages/OrderDetailPage';
 
 function App() {
   const [user, setUser] = useState(null); // Initially, no user is logged in
@@ -37,7 +39,9 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
             <Route path="/ingredientlist" element={<IngredientListPage />} />
-            <Route path="/orders" element={<OrderEntryPage />} />
+            <Route path="/order" element={<OrderEntryPage />} />
+            <Route path="/orders" element={<OrderListPage user= {user} />} />
+            <Route path='/order/:orderId' element={<OrderDetailPage user= {user} />} />
 
           </Routes>
         </div>

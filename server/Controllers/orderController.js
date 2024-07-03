@@ -68,10 +68,6 @@ exports.getAllOrders = asyncErrorHandler(async (req, res, next) => {
     .populate('items.item')
     .sort({ createdAt: -1 }); // Sort by most recent orders
 
-  if (!orders || orders.length === 0) {
-    return next(new CustomError('No orders found!', 404));
-  }
-
   const count = await Order.countDocuments(query);
 
   res.status(200).json({
@@ -146,6 +142,31 @@ exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
   });
 });
 
+exports.cancelOrder =  asyncErrorHandler(async(req, res, next) =>{
+  const { id } = req.params;
+
+  // Find the order by ID
+  const order = await Order.findById(id).populate('items.item');
+
+  if(!order){
+    return next(new CustomError('Order not found!', 404))
+  }
+
+  if (order.status === 'In Preparation'){
+    return next(new CustomError('Order is already In Preparation and cannot be cancelled.', 400))
+  }
+
+  //change status to cancelled
+  order.status = 'Cancelled';
+  await order.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Order calcelled successfully!',
+    data: order
+  });
+});
+
 // Complete preparation and update ingredients
 exports.completePrep = asyncErrorHandler(async (req, res, next) => {
   const { id } = req.params;
@@ -156,8 +177,11 @@ exports.completePrep = asyncErrorHandler(async (req, res, next) => {
   if (!order) {
     return next(new CustomError('Order not found!', 404));
   }
+  if (order.status === 'Pending' ){
+    return next(new CustomError('Order is not yet Approved.', 400))
+  }
   if (order.status === 'Ready'){
-    return next(new CustomError('Order is already Prepared.'))
+    return next(new CustomError('Order is already Prepared.', 400))
   }
 
   // Update the order status to 'Ready'
@@ -190,7 +214,6 @@ exports.completePrep = asyncErrorHandler(async (req, res, next) => {
       }
     }
   };
-
   // Deduct ingredients for each item in the order
   for (const item of order.items) {
     await deductIngredients(item);
@@ -203,6 +226,56 @@ exports.completePrep = asyncErrorHandler(async (req, res, next) => {
   });
 });
 
+exports.completePayment = asyncErrorHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  // Find the order by ID
+  const order = await Order.findById(id).populate('items.item');
+
+  if (!order) {
+    return next(new CustomError('Order not found!', 404));
+  }
+  if (order.status === 'Cancelled'){
+    return next(new CustomError('Payment cannot be completed. Order is already cancelled ', 400))
+  }
+  if (order.status === 'Completed'){
+    return next(new CustomError('Order is payment is already completed!', 400))
+  }
+
+  // Update the order status to 'Ready'
+  order.status = 'Completed';
+  await order.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Order payment completed successfully!',
+    data: order
+  });
+});
+
+exports.confirmOrder= asyncErrorHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  // Find the order by ID
+  const order = await Order.findById(id).populate('items.item');
+
+  if (!order) {
+    return next(new CustomError('Order not found!', 404));
+  }
+  if (order.status === 'Ready'){
+    return next(new CustomError('Order is already Prepared.', 400))
+  }
+
+  // Update the order status to 'Ready'
+  order.status = 'In Preparation';
+  await order.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Order confirmed and in preparation',
+    data: order
+  });
+});
 // Delete an order by ID
 exports.deleteOrder = asyncErrorHandler(async (req, res, next) => {
     const { id } = req.params;

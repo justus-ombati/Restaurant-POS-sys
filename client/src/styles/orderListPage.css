@@ -1,0 +1,31 @@
+.order-list-page {
+    padding: 20px;
+  }
+  
+  .filter {
+    margin-bottom: 20px;
+  }
+  
+  .error-message {
+    color: red;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead {
+    background-color: #f2f2f2;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f9f9f9;
+  }
+  

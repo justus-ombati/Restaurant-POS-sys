@@ -115,7 +115,6 @@ function OrderEntryPage() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setModalMessage('');
   };
 
   return (
