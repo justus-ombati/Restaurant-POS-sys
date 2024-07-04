@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import '../styles/orderEntryPage.css';
+import { AuthContext } from '../context/AuthContext'; // Correct import statement
+
 
 function OrderEntryPage() {
+  const { user } = useContext(AuthContext);
   const [tableNumber, setTableNumber] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [foods, setFoods] = useState([]);
@@ -12,25 +15,20 @@ function OrderEntryPage() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    
     const fetchFoods = async () => {
+      const token = localStorage.getItem('token');
       try {
+        if (!user || !user.token) {
+          throw new Error('User is not authenticated');
+        }
+        
+        console.log('Token:', user.token); // Debugging line
         const [foodsRes, specialFoodsRes] = await Promise.all([
-          axios.get('http://localhost:5000/food/', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-          axios.get('http://localhost:5000/specialFood/', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
+          axios.get('http://localhost:5000/food/'),
+          axios.get('http://localhost:5000/specialFood/'),
         ]);
 
         console.log('Foods Response:', foodsRes.data);
@@ -41,12 +39,12 @@ function OrderEntryPage() {
       } catch (error) {
         console.error('Error fetching foods:', error);
         setError('Error fetching foods');
-        setIsModalOpen(true)
+        setIsModalOpen(true);
       }
     };
 
     fetchFoods();
-  }, []);
+  }, [user]);
 
   const handleItemChange = (type, item, isChecked) => {
     if (isChecked) {
@@ -58,7 +56,7 @@ function OrderEntryPage() {
 
   const handleQuantityChange = (itemId, newQuantity) => {
     setSelectedItems(
-      selectedItems.map(selectedItem => 
+      selectedItems.map(selectedItem =>
         selectedItem.item._id === itemId ? { ...selectedItem, quantity: newQuantity } : selectedItem
       )
     );
@@ -81,7 +79,6 @@ function OrderEntryPage() {
       return;
     }
 
-    const token = localStorage.getItem('token');
     const orderData = {
       items: selectedItems.map(item => ({
         itemType: item.type,
@@ -93,9 +90,12 @@ function OrderEntryPage() {
     };
 
     try {
+      if (!user || !user.token) {
+        throw new Error('User is not authenticated');
+      }
       const response = await axios.post('http://localhost:5000/order/', orderData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       console.log('Order created successfully:', response.data);

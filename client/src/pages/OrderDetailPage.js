@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import '../styles/orderDetailPage.css';
+import { AuthContext } from '../context/AuthContext'; // Correct import statement
 
-function OrderDetailPage({ user }) {
+function OrderDetailPage() {
+  const { user } = useContext(AuthContext);
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
     const fetchOrder = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/order/${orderId}`, {
@@ -38,6 +39,8 @@ function OrderDetailPage({ user }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setError(null);
+    setSuccess(null);
   };
 
   const handleCancelOrder = async () => {
@@ -73,9 +76,9 @@ function OrderDetailPage({ user }) {
       setIsModalOpen(true);
       setOrder(response.data.data);
     } catch (error) {
-        console.error('Error confirming order:', error);
-        setError('Failed to confirm order. Please try again.');
-        setIsModalOpen(true);
+      console.error('Error confirming order:', error);
+      setError('Failed to confirm order. Please try again.');
+      setIsModalOpen(true);
     }
   };
 
@@ -143,7 +146,7 @@ function OrderDetailPage({ user }) {
             </tr>
           </thead>
           <tbody>
-            {order.items.map(({ item, quantity, price }) => (
+            {order.items.map(({ item, quantity }) => (
               <tr key={item._id}>
                 <td>{item.name}</td>
                 <td>{quantity}</td>
@@ -157,7 +160,7 @@ function OrderDetailPage({ user }) {
       </div>
       <div className="order-actions">
         {user.role === 'waitstaff' && (order.status === 'Pending' || order.status === 'In Preparation') &&
-            <Button type="edit" label="Edit Order" onClick={() => navigate(`/edit-order/${orderId}`)} />
+            <Button type="edit" label="Edit Order" onClick={() => navigate(`/editOrder/${orderId}`)} />
         }
         {user.role === 'kitchen' && order.status === 'Pending' && (
           <>

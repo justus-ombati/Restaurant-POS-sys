@@ -8,7 +8,6 @@ exports.getAllRoles = asyncErrorHandler(async (req, res, next) => {
   const roles = await Role.find({});
   res.status(200).json(roles);
 });
-
 // Get the permissions of one role by ID
 exports.getRolePermissions = asyncErrorHandler(async (req, res, next) => {
   const { id } = req.params;
@@ -21,7 +20,6 @@ exports.getRolePermissions = asyncErrorHandler(async (req, res, next) => {
   }
   res.status(200).json(role.permissions);
 });
-
 // Update the permissions of a role
 exports.updateRole = asyncErrorHandler(async (req, res, next) => {
   const { id } = req.params;
@@ -43,7 +41,6 @@ exports.updateRole = asyncErrorHandler(async (req, res, next) => {
 
   res.status(200).json(role);
 });
-
 // Add a new role and its permissions
 exports.addNewRole = asyncErrorHandler(async (req, res, next) => {
   const { name, permissions } = req.body;

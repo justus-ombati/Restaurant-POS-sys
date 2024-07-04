@@ -1,51 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import '../styles/loginPage.css';
+import { AuthContext } from '../context/AuthContext';
 
 function LoginPage({ onLogin }) {
   const [idNumber, setIdNumber] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
-  const [modalMessage, setModalMessage] = useState(''); // State for modal message
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ idNumber, pin }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Store the token and user information in local storage
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-
-        // Update the user in the app state
-        onLogin(data.user);
-
-        // Handle successful login
-        console.log('Login successful', data);
-        navigate('/ingredientlist'); // Redirect to the ingredient list page
-      } else {
-        // Handle error response
-        setModalMessage(data.message || 'Login failed');
-        setIsModalOpen(true); // Open the modal
-      }
+      const credentials = { idNumber, pin };
+      const { user } = await login(credentials);
+      onLogin(user); // Pass the user data instead of the credentials
+      navigate('/ingredientlist');
     } catch (error) {
+      console.error('Login page error:', error); // Debugging line
       setModalMessage('An error occurred while logging in');
-      setIsModalOpen(true); // Open the modal
+      setIsModalOpen(true);
     }
   };
 
@@ -78,7 +59,7 @@ function LoginPage({ onLogin }) {
             required
           />
         </div>
-        <Button type="submit" label="Login" onClick={handleSubmit} />
+        <Button type="submit" label="Login" />
       </form>
       <Modal
         type="error"

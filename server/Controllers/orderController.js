@@ -95,10 +95,10 @@ exports.getOrder = asyncErrorHandler(async (req, res, next) => {
 
 // Update an order by ID
 exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
-  const { items, status, customerName, tableNumber, message } = req.body;
+  const { items, customerName, tableNumber, message } = req.body;
 
   // Ensure all required fields are provided
-  if (!items || !status || !customerName || !tableNumber) {
+  if (!items || !customerName || !tableNumber) {
       return next(new CustomError('Please provide items, status, customerName, and tableNumber for the order!', 400));
   }
 
@@ -128,7 +128,7 @@ exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
   // Update the order
   const order = await Order.findByIdAndUpdate(
       req.params.id,
-      { items, status, customerName, tableNumber, message, totalAmount },
+      { items, customerName, tableNumber, message, totalAmount },
       { new: true, runValidators: true }
   ).populate('items.item');
 
@@ -138,6 +138,7 @@ exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
 
   res.status(200).json({
       status: 'success',
+      message: 'Order updated successfully!',
       data: order
   });
 });

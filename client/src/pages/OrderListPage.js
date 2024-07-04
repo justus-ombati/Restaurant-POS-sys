@@ -1,45 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import '../styles/orderListPage.css';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext'; // Correct import statement
 
-function OrderListPage({ user }) {
+function OrderListPage() {
+  const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [info, setInfo] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
     const fetchOrders = async () => {
       try {
         const response = await axios.get('http://localhost:5000/order', {
           params: statusFilter === 'All' ? {} : { status: statusFilter },
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${user.token}`,
           },
         });
         console.log('Orders Response:', response.data);
         setOrders(response.data.data);
 
-        if(response.data.totalOrders === 0){
-            setInfo('No Orders to show');
-            setIsModalOpen(true);
+        if (response.data.totalOrders === 0) {
+          setInfo('No Orders to show');
+          setIsModalOpen(true);
         }
-        } catch (error) {
+      } catch (error) {
         console.error('Error fetching orders:', error);
         setError('Error fetching orders!');
         setIsModalOpen(true);
-        }
+      }
     };
+
     fetchOrders();
-  }, [statusFilter]);
+  }, [statusFilter, user.token]);
 
   const handleStatusChange = (event) => {
     setStatusFilter(event.target.value);
@@ -47,24 +48,26 @@ function OrderListPage({ user }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setError(null);
+    setSuccess(null);
+    setInfo(null);
   };
 
   const handleViewOrder = (orderId) => {
-    navigate(`/order/${orderId}`)
+    navigate(`/order/${orderId}`);
   };
 
   const handleCancelOrder = async (orderId) => {
-    const token = localStorage.getItem('token');
     try {
       const response = await axios.patch(`http://localhost:5000/order/cancelOrder/${orderId}`, {}, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       console.log('Order cancelled successfully:', response.data);
       setSuccess('Order cancelled successfully!');
-      setIsModalOpen(true);
       setOrders(orders.map(order => order._id === orderId ? response.data.data : order));
+      setIsModalOpen(true);
     } catch (error) {
       console.error('Error cancelling order:', error);
       setError('Failed to cancel order. Please try again.');
@@ -73,50 +76,46 @@ function OrderListPage({ user }) {
   };
 
   const handleCompletePrep = async (orderId) => {
-    const token = localStorage.getItem('token');
     try {
       const response = await axios.patch(`http://localhost:5000/order/completePrep/${orderId}`, {}, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       console.log('Preparation completed successfully:', response.data);
       setSuccess('Preparation completed successfully!');
-      setIsModalOpen(true);
       setOrders(orders.map(order => order._id === orderId ? response.data.data : order));
+      setIsModalOpen(true);
     } catch (error) {
-        console.error('Error completing preparation:', error);
-        setError('Failed to complete preparation. Please try again.');
-        setIsModalOpen(true);
+      console.error('Error completing preparation:', error);
+      setError('Failed to complete preparation. Please try again.');
+      setIsModalOpen(true);
     }
   };
 
   const handleConfirmOrder = async (orderId) => {
-    const token = localStorage.getItem('token');
-
     try {
       const response = await axios.patch(`http://localhost:5000/order/confirmOrder/${orderId}`, {}, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
-      console.log('Order Confirmed successfully:', response.data);
-      setSuccess('Order Confirmed successfully!');
-      setIsModalOpen(true);
+      console.log('Order confirmed successfully:', response.data);
+      setSuccess('Order confirmed successfully!');
       setOrders(orders.map(order => order._id === orderId ? response.data.data : order));
+      setIsModalOpen(true);
     } catch (error) {
-        console.error('Error confirming order:', error);
-        setError('Failed to confirm order. Please try again.');
-        setIsModalOpen(true);
+      console.error('Error confirming order:', error);
+      setError('Failed to confirm order. Please try again.');
+      setIsModalOpen(true);
     }
   };
 
   const handleCompletePayment = async (orderId) => {
-    const token = localStorage.getItem('token');
     try {
       const response = await axios.patch(`http://localhost:5000/order/completePayment/${orderId}`, {}, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       console.log('Payment completed successfully:', response.data);
@@ -172,10 +171,10 @@ function OrderListPage({ user }) {
                   <Button type="cancel" label="Cancel" onClick={() => handleCancelOrder(order._id)} />
                 )}
                 {statusFilter === 'Pending' && user.role === 'kitchen' && (
-                    <>
-                        <Button type="confirm" label="Confirm Order" onClick={() => handleConfirmOrder(order._id)} />
-                        <Button type="cancel" label="Reject Order" onClick={() => handleCancelOrder(order._id)} />                    
-                    </>
+                  <>
+                    <Button type="confirm" label="Confirm Order" onClick={() => handleConfirmOrder(order._id)} />
+                    <Button type="cancel" label="Reject Order" onClick={() => handleCancelOrder(order._id)} />
+                  </>
                 )}
                 {statusFilter === 'In Preparation' && user.role === 'kitchen' && (
                   <Button type="confirm" label="Complete Prep" onClick={() => handleCompletePrep(order._id)} />
