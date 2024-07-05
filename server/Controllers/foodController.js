@@ -57,6 +57,7 @@ exports.getFood = asyncErrorHandler(async (req, res, next) => {
     if (!foodId) {
         return next(new CustomError('Food ID missing!', 400));
     }
+    console.log("foodId: ",foodId)
     const food = await Food.findById(foodId).populate('ingredients.ingredient');
 
     if (!food) {
