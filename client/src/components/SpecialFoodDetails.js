@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Button from '../components/Button';
+import '../styles/foodItemDetailsPage.css';
 
 const SpecialFoodDetails = ({
   foodItem,
@@ -6,7 +9,6 @@ const SpecialFoodDetails = ({
   steps,
   handleInputChange,
   handleIngredientChange,
-  handleAddIngredient,
   handleRemoveIngredient,
   handleStepChange,
   handleAddStep,
@@ -14,41 +16,109 @@ const SpecialFoodDetails = ({
   calculateCost,
   handleSaveChanges,
   handleDeleteFoodItem,
+  setIngredients,
 }) => {
+  const [availableIngredients, setAvailableIngredients] = useState([]);
+
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/ingredient');
+        setAvailableIngredients(response.data.data);
+        
+      } catch (error) {
+        console.error('Error fetching ingredients:', error);
+      }
+    };
+
+    fetchIngredients();
+  }, []);
+
+  const handleToggleIngredient = (ingredientId) => {
+    const existingIndex = ingredients.findIndex(
+      (ingredient) => ingredient.ingredient._id === ingredientId
+    );
+
+    if (existingIndex !== -1) {
+      // If ingredient exists, remove it
+      const updatedIngredients = ingredients.filter((ingredient) => ingredient.ingredient._id !== ingredientId);
+      setIngredients(updatedIngredients);
+    } else {
+      // Otherwise, add it to the list
+      const selectedIngredient = availableIngredients.find(
+        (ingredient) => ingredient._id === ingredientId
+      );
+      setIngredients([...ingredients, { ingredient: selectedIngredient, quantity: 1 }]);
+    }
+  };
+
   return (
-    <div>
-      <div>
-        <label>Name:</label>
-        <input type="text" name="name" value={foodItem.name} onChange={handleInputChange} />
+    <div className="special-food-details">
+      <div className="form-group">
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={foodItem.name}
+          onChange={handleInputChange}
+          required
+        />
       </div>
-      <div>
-        <label>Type:</label>
-        <input type="text" name="type" value={foodItem.type} readOnly />
+      <div className="form-group">
+        <label htmlFor="type">Type:</label>
+        <input
+          type="text"
+          id="type"
+          name="type"
+          value={foodItem.type}
+          readOnly
+        />
       </div>
-      <div>
-        <label>Origin:</label>
-        <input type="text" name="origin" value={foodItem.origin} onChange={handleInputChange} />
+      <div className="form-group">
+        <label htmlFor="origin">Origin:</label>
+        <input
+          type="text"
+          id="origin"
+          name="origin"
+          value={foodItem.origin}
+          onChange={handleInputChange}
+          required
+        />
       </div>
-      <div>
-        <label>Description:</label>
-        <textarea name="description" value={foodItem.description} onChange={handleInputChange} />
+      <div className="form-group">
+        <label htmlFor="description">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          value={foodItem.description}
+          onChange={handleInputChange}
+          required
+        />
       </div>
-      <div>
-        <label>Cost:</label>
-        <input type="text" value={calculateCost()} readOnly />
+      <div className="form-group">
+        <label htmlFor="cost">Cost:</label>
+        <span>${foodItem.cost.toFixed(2)}</span>
       </div>
-      <div>
-        <label>Selling Price:</label>
-        <input type="text" name="sellingPrice" value={foodItem.sellingPrice} onChange={handleInputChange} />
+      <div className="form-group">
+        <label htmlFor="sellingPrice">Selling Price:</label>
+        <input
+          type="number"
+          id="sellingPrice"
+          name="sellingPrice"
+          value={foodItem.sellingPrice}
+          onChange={handleInputChange}
+          required
+        />
       </div>
-      <div>
+      <div className="ingredients-section">
         <h3>Ingredients</h3>
         <table>
           <thead>
             <tr>
-              <th>Ingredient name</th>
+              <th>Ingredient Name</th>
               <th>Quantity</th>
-              <th>Price per Unit</th>
+              <th>Price Per Unit</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -56,37 +126,74 @@ const SpecialFoodDetails = ({
             {ingredients.map((ingredient, index) => (
               <tr key={index}>
                 <td>
-                  <input type="text" value={ingredient.name} onChange={(e) => handleIngredientChange(index, 'name', e.target.value)} />
+                  <input
+                    type="text"
+                    value={ingredient.ingredient.name || ''} // Display name (assuming it's present)
+                    onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
+                    required
+                  />
                 </td>
                 <td>
-                  <input type="number" value={ingredient.quantity} onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)} />
+                  <input
+                    type="number"
+                    value={ingredient.quantity || 0} // Display quantity (assuming it's present)
+                    onChange={(e) => handleIngredientChange(index, 'quantity', Number(e.target.value))}
+                    required
+                  />
                 </td>
                 <td>
-                  <input type="number" value={ingredient.pricePerUnit} onChange={(e) => handleIngredientChange(index, 'pricePerUnit', e.target.value)} />
+                  <input
+                    type="number"
+                    value={ingredient.ingredient.pricePerUnit || 0} // Display pricePerUnit (assuming it's present)
+                    onChange={(e) => handleIngredientChange(index, 'pricePerUnit', Number(e.target.value))}
+                    required
+                  />
                 </td>
                 <td>
-                  <button onClick={() => handleRemoveIngredient(index)}>Remove</button>
+                  <Button type="remove" label="Remove" onClick={() => handleRemoveIngredient(index)} />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <button onClick={handleAddIngredient}>Add Ingredient</button>
+        <div className="available-ingredients">
+          <h3>Add Ingredients</h3>
+          <ul>
+            {availableIngredients.map((ingredient) => (
+              <li key={ingredient._id}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={ingredients.some(i => i.ingredient._id === ingredient._id)}
+                    onChange={() => handleToggleIngredient(ingredient._id)}
+                  />
+                  {ingredient.name} - ${ingredient.pricePerUnit.toFixed(2)}
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <div>
+      <div className="steps-section">
         <h3>Preparation Steps</h3>
         <ul>
           {steps.map((step, index) => (
             <li key={index}>
-              <textarea value={step} onChange={(e) => handleStepChange(index, e.target.value)} />
-              <button onClick={() => handleRemoveStep(index)}>Remove</button>
+              <textarea
+                value={step}
+                onChange={(e) => handleStepChange(index, e.target.value)}
+                required
+              />
+              <Button type="remove" label="Remove" onClick={() => handleRemoveStep(index)} />
             </li>
           ))}
         </ul>
-        <button onClick={handleAddStep}>Add Step</button>
+        <Button type="add" label="Add Step" onClick={handleAddStep} />
       </div>
-      <button onClick={handleSaveChanges}>Save Changes</button>
-      <button onClick={handleDeleteFoodItem}>Delete Food Item</button>
+      <div className="form-actions">
+        <Button type="save" label="Save Changes" onClick={handleSaveChanges} />
+        <Button type="delete" label="Delete Food Item" onClick={handleDeleteFoodItem} />
+      </div>
     </div>
   );
 };

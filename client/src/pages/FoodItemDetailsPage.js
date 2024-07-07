@@ -37,7 +37,7 @@ const FoodItemDetailsPage = () => {
         setIngredients(data.ingredients || []);
 
         if (data.type === 'special') {
-          setSteps(data.preparationSteps || []);
+          setSteps(data.steps || []);
         }
       } catch (error) {
         console.error('Error fetching food item:', error);
@@ -101,7 +101,7 @@ const FoodItemDetailsPage = () => {
         {
           ...foodItem,
           ingredients,
-          preparationSteps: steps,
+          steps: steps,
         }
       );
 
@@ -152,6 +152,7 @@ const FoodItemDetailsPage = () => {
           calculateCost={calculateCost}
           handleSaveChanges={handleSaveChanges}
           handleDeleteFoodItem={handleDeleteFoodItem}
+          setIngredients={setIngredients}
         />
       ) : (
         <RegularFoodDetails

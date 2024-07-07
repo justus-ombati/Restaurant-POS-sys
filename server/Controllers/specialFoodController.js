@@ -4,6 +4,7 @@ const asyncErrorHandler = require('../Utils/asyncErrorHandler');
 const CustomError = require('../Utils/customError');
 
 exports.createSpecialFood = asyncErrorHandler(async (req, res, next) => {
+    console.log('reached Special Food endpoint')
     const { name, type, description, origin, ingredients, steps,sellingPrice } = req.body;
 
     // Ensure all required fields are provided

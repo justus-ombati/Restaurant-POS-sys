@@ -8,6 +8,7 @@ import OrderEntryPage from './pages/OrderEntryPage';
 import OrderListPage from './pages/OrderListPage';
 import OrderDetailPage from './pages/OrderDetailPage';
 import EditOrderPage from './pages/EditOrderPage';
+import AddNewFoodPage from './pages/AddNewFoodPage'
 import FoodListPage from './pages/FoodListPage';
 import FoodItemDetailsPage from './pages/FoodItemDetailsPage';
 
@@ -34,7 +35,8 @@ function App() {
                     <Route path="/order" element={<OrderEntryPage />} />
                     <Route path="/orders" element={<OrderListPage />} />
                     <Route path="/order/:orderId"element={<OrderDetailPage />} />
-                    <Route path='/editOrder/:orderId' element={<EditOrderPage />} />
+                    <Route path='/editOrder/:orderId' element={<EditOrderPage />} />                    
+                    <Route path="/food/add-new-food" element={<AddNewFoodPage />} />
                     <Route path="/food-menu" element={<FoodListPage />} />
                     <Route path="/food/:foodId" element={<FoodItemDetailsPage />} />
                   </Routes>

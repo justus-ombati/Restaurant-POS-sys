@@ -42,7 +42,7 @@ const FoodListPage = () => {
   return (
     <div className="food-item-list-page">
       <h1>Food Items</h1>
-      <Button type='add' label="Add New" onClick={() => navigate('/food/new')} style={{ float: 'right' }} />
+      <Button type='add' label="Add New" onClick={() => navigate('/food/add-new-food')} style={{ float: 'right' }} />
       <div className="tabs">
         <button
           className={activeTab === 'special' ? 'active' : ''}
