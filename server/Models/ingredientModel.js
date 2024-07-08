@@ -22,8 +22,18 @@ const ingredientSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Please provide the price per unit of the ingredient'],
         min: [0, 'Price cannot be a 0']
+    },
+    totalStockValue: {
+        type: Number,
+        default: 0 // Set default value to 0
     }
 }, { timestamps: true });
+
+// Pre-save hook to calculate total stock value before saving
+ingredientSchema.pre('save', async function (next) {
+  this.totalStockValue = this.amount * this.pricePerUnit;
+  next();
+});
 
 // Create the Ingredient model
 const Ingredient = mongoose.model('Ingredient', ingredientSchema);

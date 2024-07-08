@@ -11,6 +11,9 @@ import EditOrderPage from './pages/EditOrderPage';
 import AddNewFoodPage from './pages/AddNewFoodPage'
 import FoodListPage from './pages/FoodListPage';
 import FoodItemDetailsPage from './pages/FoodItemDetailsPage';
+import AddNewIngredientPage from './pages/AddNewIngredientPage';
+import IngredientDetailsPage from './pages/IngredientDetailsPage';
+import InventoryStatusPage from './pages/InventoryStatusPage';
 
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
@@ -31,7 +34,6 @@ function App() {
                 <div className="App-content">
                   <Routes>
                     <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
-                    <Route path="/ingredientlist" element={<IngredientListPage />} />
                     <Route path="/order" element={<OrderEntryPage />} />
                     <Route path="/orders" element={<OrderListPage />} />
                     <Route path="/order/:orderId"element={<OrderDetailPage />} />
@@ -39,6 +41,12 @@ function App() {
                     <Route path="/food/add-new-food" element={<AddNewFoodPage />} />
                     <Route path="/food-menu" element={<FoodListPage />} />
                     <Route path="/food/:foodId" element={<FoodItemDetailsPage />} />
+                    <Route path="/ingredient/add-new-ingredient" element={<AddNewIngredientPage />} />
+                    <Route path="/ingredient/" element={<IngredientListPage />} />
+                    <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
+                    <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
+                    <Route path="/inventory" element={<InventoryStatusPage />} />
+
                   </Routes>
                 </div>
               </>

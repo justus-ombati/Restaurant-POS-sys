@@ -22,7 +22,7 @@ function LoginPage({ onLogin }) {
       const credentials = { idNumber, pin };
       const { user } = await login(credentials);
       onLogin(user); // Pass the user data instead of the credentials
-      navigate('/ingredientlist');
+      navigate('/ingredient');
     } catch (error) {
       console.error('Login page error:', error); // Debugging line
       setModalMessage('An error occurred while logging in');
