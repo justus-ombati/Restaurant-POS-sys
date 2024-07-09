@@ -14,8 +14,11 @@ import FoodItemDetailsPage from './pages/FoodItemDetailsPage';
 import AddNewIngredientPage from './pages/AddNewIngredientPage';
 import IngredientDetailsPage from './pages/IngredientDetailsPage';
 import InventoryStatusPage from './pages/InventoryStatusPage';
+import UserListPage from './pages/UserListPage';
+import CreateUserPage from './pages/CreateUserPage';
 
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import UserDetailsPage from './pages/UserDetailsPage';
 
 function App() {
   const handleLogin = (userData) => {
@@ -46,6 +49,9 @@ function App() {
                     <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
                     <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
                     <Route path="/inventory" element={<InventoryStatusPage />} />
+                    <Route path="/users" element={<UserListPage />} />
+                    <Route path="/user/:id" element={<UserDetailsPage />} />
+                    <Route path="/user/create-user" element={<CreateUserPage />} />
 
                   </Routes>
                 </div>

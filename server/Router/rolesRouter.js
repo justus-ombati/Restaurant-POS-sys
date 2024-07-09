@@ -12,6 +12,6 @@ router.patch('/:id', checkPermission('manageRoles'), rolesController.updateRole)
 router.delete('/:id', checkPermission('manageRoles'), rolesController.deleteRole);
 
 router.get('/', checkPermission('viewRoles'), rolesController.getAllRoles);
-router.get('/:id', checkPermission('viewRoles'), rolesController.getRolePermissions);
+router.get('/:id', checkPermission('viewRoles'), rolesController.getRole);
 
 module.exports = router;

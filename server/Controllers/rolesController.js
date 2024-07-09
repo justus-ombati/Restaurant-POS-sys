@@ -1,24 +1,33 @@
 const mongoose = require('mongoose');
-const Role = require('../models/roleModel');
+const Role = require('../Models/roleModel');
 const asyncErrorHandler = require('../Utils/asyncErrorHandler');
 const CustomError = require('../Utils/customError');
 
 // Get all roles and their permissions
 exports.getAllRoles = asyncErrorHandler(async (req, res, next) => {
   const roles = await Role.find({});
-  res.status(200).json(roles);
+  res.status(200).json({
+    status:'success',
+    data: roles
+  });
 });
 // Get the permissions of one role by ID
-exports.getRolePermissions = asyncErrorHandler(async (req, res, next) => {
+exports.getRole = asyncErrorHandler(async (req, res, next) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return next(new CustomError('Invalid Role ID', 400));
   }
-  const role = await Role.findById(id);
+
+  const role = await Role.findById(id).populate('permissions'); // Assuming permissions are referenced
+
   if (!role) {
     return next(new CustomError('Role not found', 404));
   }
-  res.status(200).json(role.permissions);
+
+  res.status(200).json({
+    status: 'success',
+    data: role
+  });
 });
 // Update the permissions of a role
 exports.updateRole = asyncErrorHandler(async (req, res, next) => {
@@ -39,7 +48,10 @@ exports.updateRole = asyncErrorHandler(async (req, res, next) => {
     return next(new CustomError('Role not found', 404));
   }
 
-  res.status(200).json(role);
+  res.status(200).json({
+    status:'success',
+    data: role
+  });
 });
 // Add a new role and its permissions
 exports.addNewRole = asyncErrorHandler(async (req, res, next) => {
@@ -53,7 +65,10 @@ exports.addNewRole = asyncErrorHandler(async (req, res, next) => {
   const newRole = new Role({ name, permissions });
   await newRole.save();
 
-  res.status(201).json(newRole);
+  res.status(201).json({
+    status:'success',
+    data: newRole
+  });
 });
 
 // Delete an entire role
@@ -69,5 +84,8 @@ exports.deleteRole = asyncErrorHandler(async (req, res, next) => {
     return next(new CustomError('Role not found', 404));
   }
 
-  res.status(204).json({ message: 'Role deleted successfully' });
+  res.status(200).json({
+    status:'success',
+    message: 'Role deleted successfully'
+  });
 });
