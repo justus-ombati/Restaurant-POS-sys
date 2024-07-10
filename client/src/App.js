@@ -16,6 +16,8 @@ import IngredientDetailsPage from './pages/IngredientDetailsPage';
 import InventoryStatusPage from './pages/InventoryStatusPage';
 import UserListPage from './pages/UserListPage';
 import CreateUserPage from './pages/CreateUserPage';
+import SalesReportPage from './pages/SalesReportPage';
+import SaleDetailsPage from './pages/SaleDetailsPage';
 
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import UserDetailsPage from './pages/UserDetailsPage';
@@ -52,6 +54,7 @@ function App() {
                     <Route path="/users" element={<UserListPage />} />
                     <Route path="/user/:id" element={<UserDetailsPage />} />
                     <Route path="/user/create-user" element={<CreateUserPage />} />
+                    <Route path="/sales" element={<SalesReportPage />} />
 
                   </Routes>
                 </div>
