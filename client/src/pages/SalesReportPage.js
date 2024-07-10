@@ -79,7 +79,7 @@ const SalesReportPage = () => {
   }
 
   const handleViewSale = (saleId) => {
-    navigate('/sales/saleId')
+    navigate(`/sales/${saleId}`)
   }
 
   return (

@@ -55,6 +55,7 @@ function App() {
                     <Route path="/user/:id" element={<UserDetailsPage />} />
                     <Route path="/user/create-user" element={<CreateUserPage />} />
                     <Route path="/sales" element={<SalesReportPage />} />
+                    <Route path="/sales/:saleId" element={<SaleDetailsPage />} />
 
                   </Routes>
                 </div>

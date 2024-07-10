@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import printJS from 'print-js';
 
-
-const SaleDetailsPage = ({ match }) => {
+const SaleDetailsPage = () => {
   const { user } = useContext(AuthContext);
   const token = user?.token;
-
+  const { saleId } = useParams();
   const [saleDetails, setSaleDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const printRef = useRef(null);
 
   useEffect(() => {
     const fetchSaleDetails = async () => {
@@ -18,12 +20,10 @@ const SaleDetailsPage = ({ match }) => {
 
       try {
         const headers = {};
-
         if (token) {
           headers.Authorization = `Bearer ${token}`;
         }
 
-        const { saleId } = match.params;
         const response = await axios.get(`http://localhost:5000/sales/${saleId}`);
         setSaleDetails(response.data);
       } catch (error) {
@@ -35,7 +35,7 @@ const SaleDetailsPage = ({ match }) => {
     };
 
     fetchSaleDetails();
-  }, [match]);
+  }, [saleId, token]);
 
   const renderItemsSold = () => {
     if (!saleDetails.order?.items) return null;
@@ -50,6 +50,19 @@ const SaleDetailsPage = ({ match }) => {
     ));
   };
 
+  const handlePrint = () => {
+    printJS({
+      printable: printRef.current,
+      type: 'html',
+      scanStyles: false,
+      style: `
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+      `
+    });
+  };
+
   return (
     <div className="sales-detail-page">
       <h2>Sale Details</h2>
@@ -61,7 +74,7 @@ const SaleDetailsPage = ({ match }) => {
       )}
 
       {saleDetails._id && (
-        <div>
+        <div id="sale-details" ref={printRef}>
           <p>Transaction ID: {saleDetails._id}</p>
           <p>Customer Name: {saleDetails.order.customerName}</p>
           <p>Date: {new Date(saleDetails.createdAt).toLocaleDateString()}</p>
@@ -78,6 +91,7 @@ const SaleDetailsPage = ({ match }) => {
             </thead>
             <tbody>{renderItemsSold()}</tbody>
           </table>
+          <button onClick={handlePrint}>Print Receipt</button>
         </div>
       )}
 
