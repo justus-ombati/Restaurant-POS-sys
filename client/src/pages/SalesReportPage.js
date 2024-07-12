@@ -3,6 +3,7 @@ import axios from 'axios';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import SalesGraph from '../components/SalesGraph';
 
 const SalesReportPage = () => {
     const { user } = useContext(AuthContext);
@@ -45,9 +46,12 @@ const SalesReportPage = () => {
       }
     };
 
-    fetchData(); 
-    calcTotalSalesProfit()
-  }, [filter, selectedDate, salesData, token]);
+    fetchData();
+  }, [filter, selectedDate, token]);
+
+  useEffect(() => {
+      calcTotalSalesProfit();
+  }, [salesData]);
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -152,6 +156,7 @@ const SalesReportPage = () => {
       )}
 
       {salesData.length === 0 && <p>No sales data found for the selected filter and date.</p>}
+      <SalesGraph />
     </div>
   );
 };
