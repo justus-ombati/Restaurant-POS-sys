@@ -38,7 +38,6 @@ const AdminDashboard = () => {
     const lowStockThreshold = 8;
     return inventoryData.data.filter((ingredient) => ingredient.amount <= lowStockThreshold);
   };
-  console.log(getLowStockIngredients())
 
   // Function to get stock status based on quantity
   const getStockStatus = (quantity) => {
@@ -76,7 +75,6 @@ const AdminDashboard = () => {
       </table>
     );
   };
-
 
   useEffect(() => {
     const fetchData = async () => {

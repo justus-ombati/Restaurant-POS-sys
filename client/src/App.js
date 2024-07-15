@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import AdminDashboard from './pages/AdminDashPage';
+import KitchenStaffDashboard from './pages/KitchenDashboard';
+import WaitstaffDashboard from './pages/WaitstaffDashPage';
 import IngredientListPage from './pages/IngredientListPage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
@@ -41,6 +43,8 @@ function App() {
                   <Routes>
                     <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
                     <Route path="/adminDash" element={<AdminDashboard />} />
+                    <Route path="/kitchenDash" element={<KitchenStaffDashboard />} />
+                    <Route path="/waitstaffDash" element={<WaitstaffDashboard />} />
                     <Route path="/order" element={<OrderEntryPage />} />
                     <Route path="/orders" element={<OrderListPage />} />
                     <Route path="/order/:orderId"element={<OrderDetailPage />} />
