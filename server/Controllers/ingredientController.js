@@ -102,3 +102,31 @@ exports.deleteIngredient = asyncErrorHandler(async (req, res, next) => {
         message: `Ingredient ${ingredient.name} deleted successfully`,
     });
 });
+
+
+exports.getInventorySummary = asyncErrorHandler(async (req, res, next) => {
+    const [totalValue, count] = await Promise.all([
+      Ingredient.aggregate([
+        {
+          $group: {
+            _id: null, // Group all documents
+            totalValue: { $sum: { $multiply: ['$amount', '$pricePerUnit'] } }
+          }
+        }
+      ]),
+      Ingredient.countDocuments()
+    ]);
+  
+    if (!totalValue.length) {
+      const error = new CustomError('No ingredients found!', 404);
+      return next(error);
+    }
+  
+    const inventoryValue = totalValue[0].totalValue || 0; // Extract totalValue
+  
+    return res.status(200).json({
+      status: 'success',
+      ingredientsAvailable: count,
+      totalValue: inventoryValue.toFixed(2) // Format to two decimal places
+    });
+  });

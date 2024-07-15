@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import AdminDashboard from './pages/AdminDashPage';
 import IngredientListPage from './pages/IngredientListPage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
@@ -39,6 +40,7 @@ function App() {
                 <div className="App-content">
                   <Routes>
                     <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+                    <Route path="/adminDash" element={<AdminDashboard />} />
                     <Route path="/order" element={<OrderEntryPage />} />
                     <Route path="/orders" element={<OrderListPage />} />
                     <Route path="/order/:orderId"element={<OrderDetailPage />} />

@@ -11,6 +11,7 @@ router.use(authenticate);
 router.post('/', checkPermission('manageInventory'), ingredientController.createIngredient);
 router.delete('/:id', checkPermission('manageInventory'), ingredientController.deleteIngredient);
 router.patch('/:id', checkPermission('manageInventory'), ingredientController.updateIngredient);
+router.get('/inventorySummary', ingredientController.getInventorySummary);
 
 // Routes accessible by both admins and chefs
 router.get('/', ingredientController.getAllIngredients);
