@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from './Button';
+import Icon from './Icon';
+
 
 import '../styles/modal.css';
 
@@ -14,8 +15,16 @@ const Modal = ({ type, title, message, isOpen, onClose, actions }) => {
       <div className={modalClass}>
         <div className="modal-header">
           <h2>{title}</h2>
-          <Button className="close-button" type="close" label="X" onClick={onClose} />
-        </div>
+          <Icon
+            type="close"
+            onClick={() => handleIconClick('close')}
+            className="my-close-class" // Custom class for additional styles
+            dataId="closeIcon" // Custom data attribute
+            src={closeIcon} // Image source
+            alt="Close" // Image alt text
+            title="Close the popup" // Tooltip text
+          />        
+      </div>
         <div className="modal-body">
           <p>{message}</p>
         </div>

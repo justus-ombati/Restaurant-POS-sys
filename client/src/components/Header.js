@@ -1,23 +1,60 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Button from './Button';
 import '../styles/header.css';
 
 const Header = ({ role }) => {
+
+  const navigate = useNavigate();
+
+const handleLogout = () => {
+  localStorage.removeItem('user');
+  navigate('/ingredient');
+}
+const handleLogin = () => {
+  navigate('/');
+}
+
   return (
     <header className="header">
       <nav>
         <ul>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/inventory">Inventory</Link></li>
-          <li><Link to="/food-menu">Menu</Link></li>
-          <li><Link to="/order">Order</Link></li>
-          <li><Link to="/profile">Profile</Link></li>
-          <li><Link to="/orders">Orders</Link></li>
-
+          <Button type='view' label='Login' onClick={handleLogin()} />
           {role === 'admin' && (
             <>
-              <li><Link to="/management">Management</Link></li>
-              <li><Link to="/reports">Reports</Link></li>
+              <li><Link to="/dashboard">Dashboard</Link></li>
+              <li><Link to="/users">Users</Link></li>
+              <li><Link to="/sales">Sales</Link></li>
+              <li><Link to="/roles">Roles</Link></li>
+              <Button type='view' label='Logout' onClick={handleLogout()} />
+            </>
+          )}
+          {role === 'manager' && (
+            <>
+              <li><Link to="/dashboard">Dashboard</Link></li>
+              <li><Link to="/sales">Sales</Link></li>
+              <li><Link to="/orders">Orders</Link></li>
+              <li><Link to="/ingredients">Inventory</Link></li>
+              <li><Link to="/menu">Menu</Link></li>
+              <Button type='view' label='Logout' onClick={handleLogout()} />
+            </>
+          )}
+          {role === 'kitchen' && (
+            <>
+              <li><Link to="/dashboard">Dashboard</Link></li>
+              <li><Link to="/orders">Orders</Link></li>
+              <li><Link to="/ingredients">Inventory</Link></li>
+              <Button type='view' label='Logout' onClick={handleLogout()} />
+
+            </>
+          )}
+          {role === 'waitstaff' && (
+            <>
+              <li><Link to="/dashboard">Dashboard</Link></li>
+              <li><Link to="/orders">Orders</Link></li>
+              <li><Link to="/ingredients">Inventory</Link></li>
+              <li><Link to="/menu">Menu</Link></li>
+              <Button type='view' label='Logout' onClick={handleLogout()} />
             </>
           )}
         </ul>

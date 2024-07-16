@@ -1,26 +1,44 @@
+/* header.css */
+
 .header {
-    background-color: #333;
-    padding: 1rem;
-    color: white;
-  }
-  
-  .header nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .header nav ul li {
-    display: inline;
-  }
-  
-  .header nav ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .header nav ul li a:hover {
-    text-decoration: underline;
-  }
-  
+  background-color: #f0f0f0;  /* Light gray background */
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+}
+
+.header nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header nav li {
+  margin-right: 1rem;
+}
+
+.header nav a {
+  color: #333;  /* Dark gray text */
+  text-decoration: none;
+  font-weight: 500;  /* Slightly bold text */
+  transition: color 0.2s ease-in-out;  /* Smooth color transition on hover */
+}
+
+.header nav a:hover {
+  color: #007bff;  /* Blue text on hover */
+}
+
+.header button { /* Assuming Button is a custom component for buttons */
+  background-color: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.header button:hover {
+  color: #007bff;
+}

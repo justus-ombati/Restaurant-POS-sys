@@ -4,6 +4,7 @@ import './App.css';
 import AdminDashboard from './pages/AdminDashPage';
 import KitchenStaffDashboard from './pages/KitchenDashboard';
 import WaitstaffDashboard from './pages/WaitstaffDashPage';
+import ManagerDashboard from './pages/ManagerDashPage';
 import IngredientListPage from './pages/IngredientListPage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
@@ -45,6 +46,7 @@ function App() {
                     <Route path="/adminDash" element={<AdminDashboard />} />
                     <Route path="/kitchenDash" element={<KitchenStaffDashboard />} />
                     <Route path="/waitstaffDash" element={<WaitstaffDashboard />} />
+                    <Route path="/managerDash" element={<ManagerDashboard />} />
                     <Route path="/order" element={<OrderEntryPage />} />
                     <Route path="/orders" element={<OrderListPage />} />
                     <Route path="/order/:orderId"element={<OrderDetailPage />} />
