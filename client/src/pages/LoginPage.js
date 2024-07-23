@@ -9,8 +9,9 @@ function LoginPage({ onLogin }) {
   const [idNumber, setIdNumber] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
+  const [isModalClosing, setIsModalClosing] = useState(false);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -23,16 +24,23 @@ function LoginPage({ onLogin }) {
       const { user } = await login(credentials);
       onLogin(user); // Pass the user data instead of the credentials
       navigate('/ingredient');
+      setSuccess('Loged in successfully')
+      openModal();
     } catch (error) {
-      console.error('Login page error:', error); // Debugging line
-      setModalMessage('An error occurred while logging in');
-      setIsModalOpen(true);
+      console.error('Login page error:', error);
+      setError(error.message)
+      openModal();
     }
   };
-
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsModalClosing(false);
+  };
   const closeModal = () => {
-    setIsModalOpen(false);
-    setModalMessage('');
+    setIsModalClosing(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300); 
   };
 
   return (
@@ -61,13 +69,8 @@ function LoginPage({ onLogin }) {
         </div>
         <Button type="submit" label="Login" />
       </form>
-      <Modal
-        type="error"
-        title="Login Error"
-        message={modalMessage}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
+      {error && <Modal type="error" title="Login Error" message={error} isOpen={isModalOpen} onClose={closeModal} />}
     </div>
   );
 }

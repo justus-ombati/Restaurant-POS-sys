@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from './Button';
+import logo from '../icons/logo.png';
 import '../styles/header.css';
 
 const Header = ({ role }) => {
@@ -17,6 +18,7 @@ const handleLogin = () => {
 
   return (
     <header className="header">
+      <img src={logo} className='logo-icon' alt='logo'></img>
       <nav>
         <ul>
           <Button type='view' label='Login' onClick={handleLogin()} />
