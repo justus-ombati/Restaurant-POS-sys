@@ -1,13 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { AuthContext } from '../context/AuthContext';
+import api from '../api';
 import 'chart.js/auto';
 
 const SalesGraph = () => {
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
-
   const [filter, setFilter] = useState('daily');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
   const [chartData, setChartData] = useState(null);
@@ -20,27 +16,26 @@ const SalesGraph = () => {
       setError(null);
 
       try {
-        const headers = {};
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
         let url = '';
         switch (filter) {
           case 'daily':
-            url = `http://localhost:5000/sales/daily?date=${selectedDate}`;
+            url = `/sales/daily?date=${selectedDate}`;
             break;
           case 'weekly':
-            url = `http://localhost:5000/sales/weekly?date=${selectedDate}`;
+            url = `/sales/weekly?date=${selectedDate}`;
             break;
           case 'monthly':
-            url = `http://localhost:5000/sales/monthly?date=${selectedDate}`;
+            url = `/sales/monthly?date=${selectedDate}`;
             break;
           default:
             break;
         }
 
-        const response = await axios.get(url, { headers });
+        // Log the headers to check if Authorization header is included
+        console.log('Request URL:', url);
+        console.log('Request Headers:', api.defaults.headers);
+        
+        const response = await api.get(url);
         const salesData = response.data;
 
         const labels = salesData.map(data => {
@@ -82,7 +77,7 @@ const SalesGraph = () => {
     };
 
     fetchData();
-  }, [filter, selectedDate, token]);
+  }, [filter, selectedDate]);
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);

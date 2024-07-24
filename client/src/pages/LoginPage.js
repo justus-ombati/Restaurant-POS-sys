@@ -5,13 +5,12 @@ import Modal from '../components/Modal';
 import '../styles/loginPage.css';
 import { AuthContext } from '../context/AuthContext';
 
-function LoginPage({ onLogin }) {
+function LoginPage() {
   const [idNumber, setIdNumber] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalClosing, setIsModalClosing] = useState(false);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -22,25 +21,20 @@ function LoginPage({ onLogin }) {
     try {
       const credentials = { idNumber, pin };
       const { user } = await login(credentials);
-      onLogin(user); // Pass the user data instead of the credentials
-      navigate('/ingredient');
-      setSuccess('Loged in successfully')
-      openModal();
+      navigate('/inventory');
+      setSuccess('Logged in successfully');
+      setIsModalOpen(true);
     } catch (error) {
       console.error('Login page error:', error);
-      setError(error.message)
-      openModal();
+      setError(error.message);
+      setIsModalOpen(true);
     }
   };
-  const openModal = () => {
-    setIsModalOpen(true);
-    setIsModalClosing(false);
-  };
+
   const closeModal = () => {
-    setIsModalClosing(true);
     setTimeout(() => {
       setIsModalOpen(false);
-    }, 300); 
+    }, 300);
   };
 
   return (

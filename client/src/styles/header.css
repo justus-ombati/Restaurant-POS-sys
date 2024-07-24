@@ -1,49 +1,57 @@
-/* header.css */
-
+/* Header container */
 .header {
-  background-color: #f0f0f0;  /* Light gray background */
-  padding: 1rem 2rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+  justify-content: space-between;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
 }
 
-.logo-icon{
-  width: 32px;
-  height: 32px
+/* Logo */
+.logo-icon {
+  width: 50px;
+  height: auto;
 }
 
-.header nav {
-  display: flex;
+/* Navigation styles */
+nav ul {
   list-style: none;
-  margin: 0;
+  display: flex;
+  gap: 15px; /* Add space between the links */
   padding: 0;
+  margin: 0;
 }
 
-.header nav li {
-  margin-right: 1rem;
+/* List items styles */
+nav ul li {
+  display: flex;
+  align-items: center;
 }
 
-.header nav a {
-  color: #333;  /* Dark gray text */
+/* Link styles */
+nav ul li a {
   text-decoration: none;
-  font-weight: 500;  /* Slightly bold text */
-  transition: color 0.2s ease-in-out;  /* Smooth color transition on hover */
+  color: #333;
+  padding: 5px 10px;
+  transition: background-color 0.3s;
 }
 
-.header nav a:hover {
-  color: #007bff;  /* Blue text on hover */
+nav ul li a:hover {
+  background-color: #ddd;
+  border-radius: 5px;
 }
 
-.header button { /* Assuming Button is a custom component for buttons */
-  background-color: transparent;
+/* Button styles */
+nav ul li button {
+  background: none;
   border: none;
   color: #333;
+  padding: 5px 10px;
   cursor: pointer;
-  transition: color 0.2s ease-in-out;
+  transition: background-color 0.3s;
 }
 
-.header button:hover {
-  color: #007bff;
+nav ul li button:hover {
+  background-color: #ddd;
+  border-radius: 5px;
 }
