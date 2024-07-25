@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '../components/Button';
+import Button from './Button';
 import '../styles/foodItemDetailsPage.css';
 
 const SpecialFoodDetails = ({
