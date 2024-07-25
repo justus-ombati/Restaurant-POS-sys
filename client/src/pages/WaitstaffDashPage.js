@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+
 const WaitstaffDashboard = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [dailyCompletedOrders, setDailyCompletedOrders] = useState([]);
@@ -13,14 +11,8 @@ const WaitstaffDashboard = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const headers = {};
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const response = await axios.get('http://localhost:5000/order', {
-          params: statusFilter === 'All' ? {} : { status: statusFilter },
-          headers,
+        const response = await api.get('/order', {
+          params: statusFilter === 'All' ? {} : { status: statusFilter }
         });
         console.log('Orders Response:', response.data);
 
@@ -37,7 +29,7 @@ const WaitstaffDashboard = () => {
     };
 
     fetchOrders();
-  }, [token, statusFilter]);
+  }, [statusFilter]);
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);

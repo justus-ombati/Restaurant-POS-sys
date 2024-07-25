@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../api';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import SalesGraph from '../components/SalesGraph';
 
 const SalesReportPage = () => {
-    const { user } = useContext(AuthContext);
-    const token = user?.token;
-
-
   const [filter, setFilter] = useState('daily'); // Default filter
   const [salesData, setSalesData] = useState([]);
   const [totalSales, setTotalSales] = useState(null);
@@ -25,17 +20,11 @@ const SalesReportPage = () => {
       setError(null);
 
       try {
-        const headers = {};
-
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const baseUrl = 'http://localhost:5000/sales/getAllSales';
+        const baseUrl = '/sales/getAllSales';
         // const url = `${baseUrl}/${filter}?date=${selectedDate}`;
         const url = `${baseUrl}/?date=${selectedDate}`;
 
-        const response = await axios.get(url);
+        const response = await api.get(url);
         setSalesData(response.data);
         console.log(salesData)
       } catch (error) {
@@ -47,7 +36,7 @@ const SalesReportPage = () => {
     };
 
     fetchData();
-  }, [filter, selectedDate, token]);
+  }, [filter, selectedDate]);
 
   useEffect(() => {
       calcTotalSalesProfit();

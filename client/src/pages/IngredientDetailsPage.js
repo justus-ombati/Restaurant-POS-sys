@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
-import { AuthContext } from '../context/AuthContext';
 
 const IngredientDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
 
   const [ingredient, setIngredient] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,13 +24,7 @@ const IngredientDetailsPage = () => {
       setError(null);
 
       try {
-        const headers = {};
-
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const response = await axios.get(`http://localhost:5000/ingredient/${id}`, { headers });
+        const response = await api.get(`/ingredient/${id}`);
         setIngredient(response.data.data);
 
         setName(response.data.data.name);
@@ -49,7 +40,7 @@ const IngredientDetailsPage = () => {
     };
 
     fetchIngredient();
-  }, [id, token]);
+  }, [id]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -87,10 +78,7 @@ const IngredientDetailsPage = () => {
         amount,
         pricePerUnit
       };
-
-      const headers = { Authorization: `Bearer ${token}` };
-
-      const response = await axios.patch(`http://localhost:5000/ingredient/${id}`, updatedIngredient, { headers });
+      const response = await api.patch(`/ingredient/${id}`, updatedIngredient);
       setSuccess('Ingredient details updated successfully!');
       setIngredient(response.data.data);
     } catch (error) {
@@ -104,9 +92,7 @@ const IngredientDetailsPage = () => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this ingredient?')) {
       try {
-        const headers = { Authorization: `Bearer ${token}` };
-
-        await axios.delete(`http://localhost:5000/ingredient/${id}`, { headers });
+        await api.delete(`/ingredient/${id}`);
         navigate('/ingredient');
       } catch (error) {
         console.error('Error deleting ingredient:', error);

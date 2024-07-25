@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import Button from '../components/Button';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const CreateUserPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
 
   const [userData, setUserData] = useState({
     idNumber: '',
@@ -22,8 +19,7 @@ const CreateUserPage = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const headers = { Authorization: `Bearer ${token}` };
-        const response = await axios.get('http://localhost:5000/role', { headers });
+        const response = await api.get('/role');
         setRoles(response.data.data); // Assuming data.data contains role objects
       } catch (error) {
         console.error('Error fetching roles:', error);
@@ -44,8 +40,7 @@ const CreateUserPage = () => {
     setError(null);
 
     try {
-      const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.post('http://localhost:5000/user/register', userData, { headers });
+      const response = await api.post('/user/register', userData);
       navigate('/users'); // Redirect after successful creation
     } catch (error) {
       console.error('Error creating user:', error);

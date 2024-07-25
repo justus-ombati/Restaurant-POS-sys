@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import Button from '../components/Button';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const UserDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
-
   const [userData, setUserData] = useState({
     idNumber: '',
     name: '',
@@ -26,8 +22,7 @@ const UserDetailsPage = () => {
       setError(null);
 
       try {
-        const headers = { Authorization: `Bearer ${token}` };
-        const response = await axios.get(`http://localhost:5000/user/${id}`, { headers });
+        const response = await api.get(`/user/${id}`);
         setUserData(response.data.data);
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -38,13 +33,12 @@ const UserDetailsPage = () => {
     };
 
     fetchUser();
-  }, [id, token]);
+  }, [id]);
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const headers = { Authorization: `Bearer ${token}` };
-        const response = await axios.get('http://localhost:5000/role', { headers });
+        const response = await api.get('/role');
         setRoles(response.data.data); // Assuming data.data contains role objects
       } catch (error) {
         console.error('Error fetching roles:', error);
@@ -65,8 +59,7 @@ const UserDetailsPage = () => {
     setError(null);
 
     try {
-      const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.patch(`http://localhost:5000/user/${id}`, userData, { headers });
+      const response = await api.patch(`/user/${id}`, userData);
       setUserData(response.data.data);
       navigate('/user'); // Redirect after successful update
     } catch (error) {

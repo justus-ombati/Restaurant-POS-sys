@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from 'react';
+import api from '../api';
 import { useParams } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import printJS from 'print-js';
 
 const SaleDetailsPage = () => {
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
   const { saleId } = useParams();
   const [saleDetails, setSaleDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -19,12 +16,7 @@ const SaleDetailsPage = () => {
       setError(null);
 
       try {
-        const headers = {};
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const response = await axios.get(`http://localhost:5000/sales/${saleId}`);
+        const response = await api.get(`/sales/${saleId}`);
         setSaleDetails(response.data);
       } catch (error) {
         console.error('Error fetching sale details:', error);
@@ -35,7 +27,7 @@ const SaleDetailsPage = () => {
     };
 
     fetchSaleDetails();
-  }, [saleId, token]);
+  }, [saleId]);
 
   const renderItemsSold = () => {
     if (!saleDetails.order?.items) return null;

@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../api';
 import { useParams } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import '../styles/editOrderPage.css';
 
 const EditOrderPage = () => {
   const { orderId } = useParams();
-  const { user } = useContext(AuthContext);
   const [order, setOrder] = useState(null);
   const [foods, setFoods] = useState([]);
   const [specialFoods, setSpecialFoods] = useState([]);
@@ -25,7 +23,7 @@ const EditOrderPage = () => {
     // Fetch order details
     const fetchOrder = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/order/${orderId}`);
+        const response = await api.get(`/order/${orderId}`);
         const { data } = response.data;
         setOrder(data);
         setTableNumber(data.tableNumber);
@@ -47,8 +45,8 @@ const EditOrderPage = () => {
     const fetchAvailableItems = async () => {
       try {
         const [foodsRes, specialFoodsRes] = await Promise.all([
-          axios.get('http://localhost:5000/food/'),
-          axios.get('http://localhost:5000/specialFood/'),
+          api.get('/food/'),
+          api.get('/specialFood/'),
         ]);
 
         console.log('Foods Response:', foodsRes.data);
@@ -113,8 +111,7 @@ const EditOrderPage = () => {
     console.log('Items being sent:', items);
 
     try {
-      await axios.patch(
-        `http://localhost:5000/order/${orderId}`,
+      await api.patch(`/order/${orderId}`,
         {
           items: items.map(({ item, quantity, itemType }) => ({
             item,
@@ -124,11 +121,6 @@ const EditOrderPage = () => {
           customerName,
           tableNumber,
           message,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
         }
       );
 

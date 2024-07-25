@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 
@@ -18,7 +18,7 @@ const AddNewIngredientPage = () => {
     setError(null); // Clear any previous errors
 
     try {
-      const response = await axios.post('http://localhost:5000/ingredient/', {
+      const response = await api.post('/ingredient', {
         name,
         category,
         amount,

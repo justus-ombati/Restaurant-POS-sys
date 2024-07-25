@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../api';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import '../styles/orderListPage.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext'; // Correct import statement
 
 function OrderListPage() {
-  const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [error, setError] = useState(null);
@@ -19,11 +17,8 @@ function OrderListPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/order', {
-          params: statusFilter === 'All' ? {} : { status: statusFilter },
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+        const response = await api.get('/order', {
+          params: statusFilter === 'All' ? {} : { status: statusFilter }
         });
         console.log('Orders Response:', response.data);
         setOrders(response.data.data);
@@ -40,7 +35,7 @@ function OrderListPage() {
     };
 
     fetchOrders();
-  }, [statusFilter, user.token]);
+  }, [statusFilter]);
 
   const handleStatusChange = (event) => {
     setStatusFilter(event.target.value);
@@ -59,11 +54,7 @@ function OrderListPage() {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/order/cancelOrder/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await api.patch(`/order/cancelOrder/${orderId}`);
       console.log('Order cancelled successfully:', response.data);
       setSuccess('Order cancelled successfully!');
       setOrders(orders.map(order => order._id === orderId ? response.data.data : order));
@@ -77,11 +68,7 @@ function OrderListPage() {
 
   const handleCompletePrep = async (orderId) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/order/completePrep/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await api.patch(`/order/completePrep/${orderId}`);
       console.log('Preparation completed successfully:', response.data);
       setSuccess('Preparation completed successfully!');
       setOrders(orders.map(order => order._id === orderId ? response.data.data : order));
@@ -95,11 +82,7 @@ function OrderListPage() {
 
   const handleConfirmOrder = async (orderId) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/order/confirmOrder/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await api.patch(`/order/confirmOrder/${orderId}`);
       console.log('Order confirmed successfully:', response.data);
       setSuccess('Order confirmed successfully!');
       setOrders(orders.map(order => order._id === orderId ? response.data.data : order));
@@ -113,11 +96,7 @@ function OrderListPage() {
 
   const handleCompletePayment = async (orderId) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/order/completePayment/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await api.patch(`/order/completePayment/${orderId}`);
       console.log('Payment completed successfully:', response.data);
       setSuccess('Payment completed successfully!');
       setOrders(orders.map(order => order._id === orderId ? response.data.data : order));

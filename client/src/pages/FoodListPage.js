@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
@@ -23,8 +23,8 @@ const FoodListPage = () => {
   const fetchFoods = async () => {
     try {
         const [foodsRes, specialFoodsRes] = await Promise.all([
-          axios.get('http://localhost:5000/food/'),
-          axios.get('http://localhost:5000/specialFood/'),
+          api.get('/food/'),
+          api.get('/specialFood/'),
         ]);
         console.log('Regular Foods:', foodsRes.data.data);
         console.log('Special Foods:', specialFoodsRes.data.data);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const AddNewFoodPage = () => {
   const [foodItem, setFoodItem] = useState({
@@ -17,7 +17,7 @@ const AddNewFoodPage = () => {
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/ingredient');
+        const response = await api.get('/ingredient');
         setAvailableIngredients(response.data.data);
       } catch (error) {
         console.error('Error fetching ingredients:', error);
@@ -80,7 +80,7 @@ const AddNewFoodPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endpoint = foodItem.type === 'special' ? 'http://localhost:5000/specialFood' : 'http://localhost:5000/food';
+    const endpoint = foodItem.type === 'special' ? '/specialFood' : '/food';
     const payload = {
       name: foodItem.name,
       type: foodItem.type,
@@ -91,7 +91,7 @@ const AddNewFoodPage = () => {
     };
 
     try {
-      const response = await axios.post(endpoint, payload);
+      const response = await api.post(endpoint, payload);
       alert('Food item created successfully');
       setFoodItem({
         name: '',

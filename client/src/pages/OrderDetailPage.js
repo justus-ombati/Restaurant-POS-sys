@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
+import { AuthContext } from '../context/AuthContext';
+import api from '../api';
 import '../styles/orderDetailPage.css';
-import { AuthContext } from '../context/AuthContext'; // Correct import statement
 
 function OrderDetailPage() {
   const { user } = useContext(AuthContext);
@@ -16,14 +16,9 @@ function OrderDetailPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     const fetchOrder = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/order/${orderId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await api.get(`/order/${orderId}`);
 
         console.log('Order Response:', response.data);
         setOrder(response.data.data);
@@ -44,13 +39,8 @@ function OrderDetailPage() {
   };
 
   const handleCancelOrder = async () => {
-    const token = localStorage.getItem('token');
     try {
-      const response = await axios.patch(`http://localhost:5000/order/cancelOrder/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.patch(`/order/cancelOrder/${orderId}`);
       console.log('Order cancelled successfully:', response.data);
       setSuccess('Order cancelled successfully!');
       setIsModalOpen(true);
@@ -63,14 +53,9 @@ function OrderDetailPage() {
   };
 
   const handleConfirmOrder = async () => {
-    const token = localStorage.getItem('token');
 
     try {
-      const response = await axios.patch(`http://localhost:5000/order/confirmOrder/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.patch(`/order/confirmOrder/${orderId}`);
       console.log('Order Confirmed successfully:', response.data);
       setSuccess('Order Confirmed successfully!');
       setIsModalOpen(true);
@@ -83,13 +68,8 @@ function OrderDetailPage() {
   };
 
   const handleCompletePrep = async () => {
-    const token = localStorage.getItem('token');
     try {
-      const response = await axios.patch(`http://localhost:5000/order/completePrep/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.patch(`/order/completePrep/${orderId}`);
       console.log('Preparation completed successfully:', response.data);
       setSuccess('Preparation completed successfully!');
       setIsModalOpen(true);
@@ -102,13 +82,8 @@ function OrderDetailPage() {
   };
 
   const handleCompletePayment = async () => {
-    const token = localStorage.getItem('token');
     try {
-      const response = await axios.patch(`http://localhost:5000/order/completePayment/${orderId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.patch(`/order/completePayment/${orderId}`);
       console.log('Payment completed successfully:', response.data);
       setSuccess('Payment completed successfully!');
       setIsModalOpen(true);

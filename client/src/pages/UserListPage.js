@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import Button from '../components/Button';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const UserListPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
-
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,13 +15,7 @@ const UserListPage = () => {
       setError(null);
 
       try {
-        const headers = {};
-
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const response = await axios.get('http://localhost:5000/user', { headers });
+        const response = await api.get('/user');
         setUsers(response.data.data);
       } catch (error) {
         console.error('Error fetching users:', error);

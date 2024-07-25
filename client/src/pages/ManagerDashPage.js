@@ -1,114 +1,53 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import SalesGraph from '../components/SalesGraph'; // Replace with your SalesChart component path
+import SalesGraph from '../components/SalesGraph'; // Replace with your SalesGraph component path
+import Headline from '../components/Headline'; // Replace with your Headline component path
+import api from '../api';
 
 const ManagerDashboard = () => {
-    const { user } = useContext(AuthContext);
-    const token = user?.token;
-
   const navigate = useNavigate();
-  const [totalSales, setTotalSales] = useState(null)
-  const [totalProfit, setTotalProfit] = useState(null)
-  const [salesData, setSalesData] = useState(null);
   const [inventoryData, setInventoryData] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
 
-  const setHeaders = () => {
-    const headers = {};
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-    return headers;
+  const getStockStatus = (quantity) => {
+    if (!inventoryData) return 'Data Unavailable'; // Return a message if no data
+
+    if (quantity === 0) return 'Out of stock';
+    if (quantity <= 4) return 'Critically Low';
+    if (quantity <= 8) return 'Running Low';
+    return 'In plenty';
   };
 
   useEffect(() => {
-
-    const fetchSalesData = async () => {
-        try {
-          const headers = setHeaders();
-          const response = await axios.get(`http://localhost:5000/sales/getAllSales?date=${selectedDate}`, {headers});
-          setSalesData(response.data);
-          console.log(salesData)
-          calcTotalSalesProfit(salesData); // Calculate totals on data update
-        } catch (error) {
-          console.error('Error fetching sales data:', error);
-          // Handle errors (consider setting an error state or displaying an error message)
-        }
-      };
-  
-      fetchSalesData();
-    }, [token, selectedDate]);
-
     const fetchInventoryData = async () => {
       try {
-        const headers = setHeaders();
-        const response = await axios.get('http://localhost:5000/ingredient', {headers}); // Replace with your inventory endpoint
+        const response = await api.get('/ingredient');
         setInventoryData(response.data.data.slice(0, 5)); // Show only top 5 items
       } catch (error) {
         console.error('Error fetching inventory data:', error);
-        // Handle errors
       }
     };
 
     const fetchOrders = async () => {
       try {
-        const headers = setHeaders();
-        const response = await axios.get('http://localhost:5000/order', {headers}); // Replace with your orders endpoint
+        const response = await api.get('/order');
         setOrders(response.data.data);
       } catch (error) {
         console.error('Error fetching orders data:', error);
-        // Handle errors
       }
     };
 
-    useEffect(() => {
-        fetchInventoryData();
-        fetchOrders();
-      }, [token]);
-
-    const calcTotalSalesProfit = (data) => {
-    if (!data) return; // Handle empty data case
-
-    const totalSales = data.reduce((total, sale) => total + sale.totalAmount, 0);
-    const totalProfit = data.reduce((total, sale) => total + sale.profit, 0);
-    setTotalSales(totalSales);
-    setTotalProfit(totalProfit);
-    };
-
-    const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
-    };
-
-    console.log(salesData)
-
+    fetchInventoryData();
+    fetchOrders();
+  }, []);
 
   return (
     <div className="manager-dashboard">
       <h2>Sales And Profit Analysis</h2>
-      <div className="date-picker-container">
-        <label htmlFor="date">Select Date:</label>
-        <input
-          type="date"
-          id="date"
-          value={selectedDate}
-          onChange={handleDateChange}
-        />
-        </div>
-      {salesData ? (
-        <>
-          <p>Total Sales: {totalSales}</p>
-          <p>Total Profit: {totalProfit}</p>
-          <button onClick={() => navigate('/sales')}>Sales Details</button>
-        </>
-      ) : (
-        <p>Loading sales data...</p>
-      )}
+      <Headline />
 
       <h2>Sales & Profits Trends</h2>
-      <SalesGraph/>
+      <SalesGraph />
 
       <h2>Inventory Management</h2>
       <table>
@@ -128,7 +67,7 @@ const ManagerDashboard = () => {
               <td>{item.name}</td>
               <td>{item.amount}</td>
               <td>{item.pricePerUnit}</td>
-              <td>{item.status}</td>
+              <td>{getStockStatus(item.amount)}</td>
             </tr>
           ))}
         </tbody>
@@ -150,7 +89,7 @@ const ManagerDashboard = () => {
             <tr key={order._id}>
               <td>{order._id}</td>
               <td>{order.tableNumber}</td>
-              <td>{order.createdAt.slice(0, 16)}</td> {/* Show full date and time */}
+              <td>{new Date(order.createdAt).toLocaleString()}</td>
               <td>{order.status}</td>
             </tr>
           ))}

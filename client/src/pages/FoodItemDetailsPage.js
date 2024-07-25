@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect} from 'react';
+import api from '../api';
 import { useParams, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 import SpecialFoodDetails from '../components/SpecialFoodDetails';
 import RegularFoodDetails from '../components/RegularFoodDetails';
 import Modal from '../components/Modal';
@@ -10,7 +9,6 @@ import '../styles/foodItemDetailsPage.css';
 const FoodItemDetailsPage = () => {
   const { foodId } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
   const [foodItem, setFoodItem] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
@@ -22,14 +20,13 @@ const FoodItemDetailsPage = () => {
     const fetchFoodItem = async () => {
       try {
         let response;
-
         // Try to fetch as a regular food item
         try {
-          response = await axios.get(`http://localhost:5000/food/${foodId}`);
+          response = await api.get(`/food/${foodId}`);
           console.log(response.data)
         } catch (regularError) {
           // If not found, try to fetch as a special food item
-          response = await axios.get(`http://localhost:5000/specialFood/${foodId}`);
+          response = await api.get(`/specialFood/${foodId}`);
         }
 
         const { data } = response.data;
@@ -95,8 +92,8 @@ const FoodItemDetailsPage = () => {
     setError('');
 
     try {
-      const url = foodItem.type === 'special' ? `http://localhost:5000/specialFood/${foodId}` : `http://localhost:5000/food/${foodId}`;
-      await axios.patch(
+      const url = foodItem.type === 'special' ? `/specialFood/${foodId}` : `/food/${foodId}`;
+      await api.patch(
         url,
         {
           ...foodItem,
@@ -117,8 +114,8 @@ const FoodItemDetailsPage = () => {
     setError('');
 
     try {
-      const url = foodItem.type === 'special' ? `http://localhost:5000/specialFood/${foodId}` : `http://localhost:5000/food/${foodId}`;
-      await axios.delete(url);
+      const url = foodItem.type === 'special' ? `/specialFood/${foodId}` : `/food/${foodId}`;
+      await api.delete(url);
 
       navigate('/food-menu');
     } catch (error) {

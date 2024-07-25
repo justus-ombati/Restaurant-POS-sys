@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import api from '../api';
 
 const KitchenStaffDashboard = () => {
-    const { user } = useContext(AuthContext);
-    const token = user?.token;
-    
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
@@ -16,14 +13,8 @@ const KitchenStaffDashboard = () => {
   useEffect(() => {
     const fetchOrders = async () => {
         try {
-            const headers = {};
-            if (token) {
-            headers.Authorization = `Bearer ${token}`;
-            }
-
-        const response = await axios.get('http://localhost:5000/order',{
-            params: statusFilter === 'All' ? {} : { status: statusFilter },
-            headers
+        const response = await api.get('/order',{
+            params: statusFilter === 'All' ? {} : { status: statusFilter }
             });
         console.log('Orders Response:', response.data);
         setOrders(response.data.data);
@@ -39,7 +30,7 @@ const KitchenStaffDashboard = () => {
 
     fetchOrders();
 
-    }, [ token, statusFilter ]);
+    }, [ statusFilter ]);
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);

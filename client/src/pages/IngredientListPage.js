@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import Button from '../components/Button';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const IngredientListPage = () => {
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
 
   useEffect(() => {
     const fetchIngredients = async () => {
@@ -17,13 +14,7 @@ const IngredientListPage = () => {
       setError(null);
 
       try {
-        const headers = {};
-
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const response = await axios.get('http://localhost:5000/ingredient/', { headers }); // Include headers in the request
+        const response = await api.get('/ingredient/');
         setIngredients(response.data.data);
       } catch (error) {
         console.error('Error fetching ingredients:', error);
@@ -34,7 +25,7 @@ const IngredientListPage = () => {
     };
 
     fetchIngredients();
-  }, [token]);
+  }, []);
 
   return (
     <div className="ingredient-list-page">

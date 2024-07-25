@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import api from '../api';
 
 const InventoryStatusPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const token = user?.token;
 
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +15,7 @@ const InventoryStatusPage = () => {
       setError(null);
 
       try {
-        const headers = {};
-
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const response = await axios.get('http://localhost:5000/ingredient', { headers });
+        const response = await api.get('/ingredient', { headers });
         setIngredients(response.data.data);
       } catch (error) {
         console.error('Error fetching ingredients:', error);
