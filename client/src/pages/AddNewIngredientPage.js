@@ -42,17 +42,10 @@ const AddNewIngredientPage = () => {
     const { name, value } = e.target;
     setFoodItem((prev) => ({ ...prev, [name]: value }));
   };
-
-  const closeModal = () => {
-    setTimeout(() => {
-      setIsModalOpen(false);
-    }, 300);
-  };
-
   return (
     <div className="add-new-ingredient">
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen} onClose={closeModal} />}
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
       <h2>Add New Ingredient</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

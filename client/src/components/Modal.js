@@ -4,10 +4,16 @@ import Icon from './Icon';
 import close from '../icons/close.png';
 import '../styles/modal.css';
 
-const Modal = ({ type, title, message, isOpen, onClose }) => {
+const Modal = ({ type, title, message, isOpen }) => {
   if (!isOpen) return null;
 
   const modalClass = `modal ${type}`;
+  
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
 
   return (
     <div className="modal-container">
@@ -16,7 +22,7 @@ const Modal = ({ type, title, message, isOpen, onClose }) => {
           <h2>{title}</h2>
           <Icon
             type="close"
-            onClick={onClose}
+            onClick={closeModal}
             className="close-btn"
             dataId="closeIcon"
             src={close}

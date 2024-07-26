@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
 
 const CreateUserPage = () => {
   const navigate = useNavigate();
@@ -13,16 +14,19 @@ const CreateUserPage = () => {
     role: '',
   });
   const [roles, setRoles] = useState([]); // List of available roles
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         const response = await api.get('/role');
-        setRoles(response.data.data); // Assuming data.data contains role objects
+        setRoles(response.data.data);
       } catch (error) {
         console.error('Error fetching roles:', error);
+        setError(error.message);
+        setIsModalOpen(true);
       }
     };
 
@@ -36,30 +40,23 @@ const CreateUserPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
     try {
       const response = await api.post('/user/register', userData);
-      navigate('/users'); // Redirect after successful creation
+      setSuccess(response.data.message || "User created successfully");
+      setIsModalOpen(true);
+      navigate('/users');
     } catch (error) {
       console.error('Error creating user:', error);
       setError(error.response?.data?.message || 'Failed to create new user');
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <div className="create-user-page">
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      
       <h2>Create New User</h2>
-
-      {isLoading && <p>Creating user...</p>}
-
-      {error && (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      )}
-
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="idNumber">ID Number:</label>
@@ -84,7 +81,7 @@ const CreateUserPage = () => {
             ))}
           </select>
         </div>
-        <Button type="submit" label="Create User" disabled={isLoading} />
+        <Button type="submit" label="Create User" onClick={handleSubmit}/>
       </form>
     </div>
   );

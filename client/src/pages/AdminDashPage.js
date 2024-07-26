@@ -4,6 +4,10 @@ import Headline from '../components/Headline';
 import SalesGraph from '../components/SalesGraph';
 
 const AdminDashboard = () => {
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [inventoryData, setInventoryData] = useState({}); // State for inventory data
   const [inventorySummary, setInventorySummary] = useState({}); // State for inventory data
   const [recentOrders, setRecentOrders] = useState([]); // State for recent orders
@@ -68,6 +72,8 @@ const AdminDashboard = () => {
         setRecentOrders(recentOrdersResponse.data || []);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
+        setError(error.message);
+        setIsModalOpen(true);
       }
     };
 
@@ -80,6 +86,8 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
       <h2>Admin Dashboard</h2>
       <Headline />
       <div className="sales-trends">

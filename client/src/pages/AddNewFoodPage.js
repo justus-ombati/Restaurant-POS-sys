@@ -118,16 +118,16 @@ const AddNewFoodPage = () => {
     }
   };
 
-  const closeModal = () => {
-    setTimeout(() => {
-      setIsModalOpen(false);
-    }, 300);
-  };
+  // const closeModal = () => {
+  //   setTimeout(() => {
+  //     setIsModalOpen(false);
+  //   }, 300);
+  // };
 
   return (
     <div className="add-new-food-page">
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen} onClose={closeModal} />}
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} />}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen} />}
       <h1>Add New Food Item</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
