@@ -21,7 +21,7 @@ const Headline = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: salesResponse } = await api.get(`http://localhost:5000/sales/getAllSales?date=${selectedDate}`);
+        const { data: salesResponse } = await api.get(`/sales/getAllSales?date=${selectedDate}`);
         setSalesData(salesResponse || []);
       } catch (error) {
         console.error('Error fetching sales data:', error);

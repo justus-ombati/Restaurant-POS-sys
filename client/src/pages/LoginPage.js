@@ -31,12 +31,6 @@ function LoginPage() {
     }
   };
 
-  const closeModal = () => {
-    setTimeout(() => {
-      setIsModalOpen(false);
-    }, 300);
-  };
-
   return (
     <div className="login-page">
       <h1>Login</h1>

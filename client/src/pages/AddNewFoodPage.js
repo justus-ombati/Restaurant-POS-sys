@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Modal from '../components/Modal';
+import Button from '../components/Button';
 import api from '../api';
 
 const AddNewFoodPage = () => {
@@ -13,6 +15,9 @@ const AddNewFoodPage = () => {
     steps: ['']
   });
   const [availableIngredients, setAvailableIngredients] = useState([]);
+  const [error, setError] = useState('');
+  const [ success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchIngredients = async () => {
@@ -21,6 +26,8 @@ const AddNewFoodPage = () => {
         setAvailableIngredients(response.data.data);
       } catch (error) {
         console.error('Error fetching ingredients:', error);
+        setError(error.message)
+        setIsModalOpen(true);
       }
     };
 
@@ -92,7 +99,6 @@ const AddNewFoodPage = () => {
 
     try {
       const response = await api.post(endpoint, payload);
-      alert('Food item created successfully');
       setFoodItem({
         name: '',
         type: 'regular',
@@ -103,13 +109,25 @@ const AddNewFoodPage = () => {
         description: '',
         steps: ['']
       });
+      setSuccess('Menu item added successfully!');
+      setIsModalOpen(true);
     } catch (error) {
       console.error('Error creating food item:', error);
+      setError(error.message);
+      setIsModalOpen(true);
     }
+  };
+
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
   };
 
   return (
     <div className="add-new-food-page">
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen} onClose={closeModal} />}
       <h1>Add New Food Item</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -186,9 +204,7 @@ const AddNewFoodPage = () => {
                   </td>
                   <td>{ingredient.pricePerUnit}</td>
                   <td>
-                    <button type="button" onClick={() => handleToggleIngredient(ingredient.ingredient)}>
-                      Remove
-                    </button>
+                    <Button type="remove" label="Remove" onClick={handleToggleIngredient(ingredient.ingredient)} />
                   </td>
                 </tr>
               ))}
@@ -238,18 +254,14 @@ const AddNewFoodPage = () => {
                     onChange={(e) => handleStepChange(index, e.target.value)}
                     required
                   />
-                  <button type="button" onClick={() => handleRemoveStep(index)}>
-                    Remove
-                  </button>
+                  <Button type="remove" label="Remove" onClick={handleRemoveStep(index)} />
                 </li>
               ))}
             </ul>
-            <button type="button" onClick={handleAddStep}>
-              Add Step
-            </button>
+            <Button type="add" label="Add Step" onClick={handleAddStep} />
           </div>
         )}
-        <button type="submit">Submit</button>
+        <Button type="save" label="Save" onClick={handleSubmit} />
       </form>
     </div>
   );

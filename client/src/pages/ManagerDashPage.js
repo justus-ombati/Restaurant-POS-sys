@@ -5,7 +5,6 @@ import Headline from '../components/Headline'; // Replace with your Headline com
 import api from '../api';
 
 const ManagerDashboard = () => {
-  console.log('API:',api.baseURL)
   const navigate = useNavigate();
   const [inventoryData, setInventoryData] = useState([]);
   const [orders, setOrders] = useState([]);

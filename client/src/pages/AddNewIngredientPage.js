@@ -4,75 +4,74 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 
 const AddNewIngredientPage = () => {
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState(0);
-  const [pricePerUnit, setPricePerUnit] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [inventoryItem, setInventoryItem] = useState({
+    name: '',
+    category: '',
+    amount: 0,
+    pricePerUnit: 0
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null); // Clear any previous errors
-
     try {
       const response = await api.post('/ingredient', {
-        name,
-        category,
-        amount,
-        pricePerUnit
+        name: inventoryItem.name,
+        category: inventoryItem.category,
+        amount: inventoryItem.amount,
+        pricePerUnit: inventoryItem.pricePerUnit
       });
-
       setSuccess('Ingredient added successfully!');
-      clearForm(); // Clear form data after successful submission
+      setIsModalOpen(true);
+      setInventoryItem({
+        name: '',
+        category: '',
+        amount: 0,
+        pricePerUnit: 0
+      });
     } catch (error) {
       console.error('Error adding ingredient:', error);
-      setError(error.response?.data?.message || 'Failed to add ingredient');
-    } finally {
-      setIsLoading(false);
+      setError(error.message);
+      setIsModalOpen(true);
     }
   };
 
-  const clearForm = () => {
-    setName('');
-    setCategory('');
-    setAmount(0);
-    setPricePerUnit(0);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFoodItem((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
   };
 
   return (
     <div className="add-new-ingredient">
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen} onClose={closeModal} />}
       <h2>Add New Ingredient</h2>
-      {error && (
-        <Modal type="error" title="Error" message={error} isOpen={!!error} onClose={() => setError(null)}>
-          <Button type="text" label="Close" onClick={() => setError(null)} />
-        </Modal>
-      )}
-      {success && (
-        <Modal type="success" title="Success" message={success} isOpen={!!success} onClose={() => setSuccess(null)}>
-          <Button type="text" label="Close" onClick={() => setSuccess(null)} />
-        </Modal>
-      )}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input type="text" id="name" value={inventoryItem.name} onChange={handleInputChange} required />
         </div>
         <div className="form-group">
           <label htmlFor="category">Category:</label>
-          <input type="text" id="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
+          <input type="text" id="category" value={inventoryItem.category} onChange={handleInputChange} required />
         </div>
         <div className="form-group">
           <label htmlFor="amount">Quantity (KG/L):</label>
-          <input type="number" id="amount" value={amount} onChange={(e) => setAmount(Number(e.target.value))} min={0} required />
+          <input type="number" id="amount" value={inventoryItem.amount} onChange={handleInputChange} min={0} required />
         </div>
         <div className="form-group">
           <label htmlFor="pricePerUnit">Price per Unit (Ksh):</label>
-          <input type="number" id="pricePerUnit" value={pricePerUnit} onChange={(e) => setPricePerUnit(Number(e.target.value))} min={0} required />
+          <input type="number" id="pricePerUnit" value={inventoryItem.pricePerUnit} onChange={handleInputChange} min={0} required />
         </div>
-        <Button type="primary" label="Save" disabled={isLoading} />
+        <Button type="save" label="Save" onClick={handleSubmit} />
       </form>
     </div>
   );
