@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import api from '../api';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
@@ -6,6 +7,7 @@ import '../styles/orderListPage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function OrderListPage() {
+  const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [error, setError] = useState(null);

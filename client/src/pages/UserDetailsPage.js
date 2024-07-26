@@ -46,7 +46,7 @@ const UserDetailsPage = () => {
     };
 
     fetchRoles();
-  }, [token]);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

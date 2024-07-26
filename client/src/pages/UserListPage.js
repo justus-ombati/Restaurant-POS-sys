@@ -26,7 +26,7 @@ const UserListPage = () => {
     };
 
     fetchUsers();
-  }, [token]);
+  }, []);
 
   return (
     <div className="user-list-page">

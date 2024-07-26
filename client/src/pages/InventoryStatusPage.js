@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const InventoryStatusPage = () => {
-  const navigate = useNavigate();
-
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,7 +13,7 @@ const InventoryStatusPage = () => {
       setError(null);
 
       try {
-        const response = await api.get('/ingredient', { headers });
+        const response = await api.get('/ingredient');
         setIngredients(response.data.data);
       } catch (error) {
         console.error('Error fetching ingredients:', error);
@@ -26,7 +24,7 @@ const InventoryStatusPage = () => {
     };
 
     fetchIngredients();
-  }, [token]);
+  }, []);
 
   const calculateTotalValue = () => {
     return ingredients.reduce((total, ingredient) => {
