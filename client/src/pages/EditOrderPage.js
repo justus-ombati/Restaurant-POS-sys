@@ -15,12 +15,11 @@ const EditOrderPage = () => {
   const [items, setItems] = useState([]);
   const [message, setMessage] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
-  const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    // Fetch order details
     const fetchOrder = async () => {
       try {
         const response = await api.get(`/order/${orderId}`);
@@ -35,10 +34,11 @@ const EditOrderPage = () => {
           price: price ?? item.sellingPrice, // Use item price if not already set
           itemType
         })));
-        setMessage(data.message);
         updateTotalAmount(data.items);
       } catch (error) {
         console.error('Error fetching order:', error);
+        setError(error.message);
+        setIsModalOpen(true);
       }
     };
 
@@ -56,6 +56,8 @@ const EditOrderPage = () => {
         setSpecialFoods(Array.isArray(specialFoodsRes.data.data) ? specialFoodsRes.data.data : []);
       } catch (error) {
         console.error('Error fetching available items:', error);
+        setError(error.message);
+        setIsModalOpen(true);
       }
     };
 
@@ -104,9 +106,6 @@ const EditOrderPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-
     // Log items before sending to server for debugging
     console.log('Items being sent:', items);
 
@@ -124,23 +123,21 @@ const EditOrderPage = () => {
         }
       );
 
-      setModalMessage('Order updated successfully!');
+      setSuccess('Order updated');
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error updating order:', error);
-      setModalMessage('An error occurred while updating the order');
+      setError(error.message);
       setIsModalOpen(true);
     }
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalMessage('');
   };
 
   return (
     <div className="edit-order-page">
       <h1>Edit Order</h1>
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      
       {order && <h2>Order ID: {order._id}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -235,15 +232,8 @@ const EditOrderPage = () => {
           <label>Total Amount:</label>
           <span>${totalAmount.toFixed(2)}</span>
         </div>
-        <Button type="submit" label="Update Order" />
+        <Button type="save" label="Update Order" onClick={handleSubmit}/>
       </form>
-      <Modal
-        type="success"
-        title="Order Update"
-        message={modalMessage}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
     </div>
   );
 };

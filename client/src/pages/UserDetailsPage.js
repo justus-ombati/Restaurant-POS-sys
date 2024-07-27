@@ -12,23 +12,20 @@ const UserDetailsPage = () => {
     pin: '',
     role: '',
   });
-  const [roles, setRoles] = useState([]); // List of available roles
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [roles, setRoles] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
-      setIsLoading(true);
-      setError(null);
-
       try {
         const response = await api.get(`/user/${id}`);
         setUserData(response.data.data);
       } catch (error) {
         console.error('Error fetching user:', error);
         setError(error.response?.data?.message || 'Failed to fetch user details');
-      } finally {
-        setIsLoading(false);
+        setIsModalOpen(true);
       }
     };
 
@@ -53,33 +50,26 @@ const UserDetailsPage = () => {
     setUserData({ ...userData, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const handleSubmit = async () => {
     try {
       const response = await api.patch(`/user/${id}`, userData);
       setUserData(response.data.data);
-      navigate('/user'); // Redirect after successful update
+      setSuccess(response.data.message || 'User Details updated');
+      setIsModalOpen(true);
+      navigate('/user');
     } catch (error) {
       console.error('Error updating user:', error);
       setError(error.response?.data?.message || 'Failed to update user details');
-    } finally {
-      setIsLoading(false);
+      setIsModalOpen(true)
     }
   };
 
   return (
     <div className="user-details-page">
       <h2>User Details</h2>
-  
-      {isLoading && <p>Loading user details...</p>}
-  
-      {error && (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      )}
-  
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="idNumber">ID Number:</label>
@@ -105,7 +95,7 @@ const UserDetailsPage = () => {
             ))}
           </select>
         </div>
-        <Button type="submit" label="Save Changes" disabled={isLoading} />
+        <Button type="save" label="Save Changes" onClick={handleSubmit} />
       </form>
     </div>
   );

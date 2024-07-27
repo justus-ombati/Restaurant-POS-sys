@@ -13,8 +13,9 @@ const FoodItemDetailsPage = () => {
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('')
+  const [success, setSuccess] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
     const fetchFoodItem = async () => {
@@ -38,7 +39,8 @@ const FoodItemDetailsPage = () => {
         }
       } catch (error) {
         console.error('Error fetching food item:', error);
-        setError('Error fetching food item.');
+        setError(error.message);
+        setIsModalOpen(true);
       }
     };
 
@@ -89,8 +91,6 @@ const FoodItemDetailsPage = () => {
   };
 
   const handleSaveChanges = async () => {
-    setError('');
-
     try {
       const url = foodItem.type === 'special' ? `/specialFood/${foodId}` : `/food/${foodId}`;
       await api.patch(
@@ -101,32 +101,25 @@ const FoodItemDetailsPage = () => {
           steps: steps,
         }
       );
-
-      setModalMessage('Food item updated successfully!');
+      setSuccess('Food item updated successfully!');
       setIsModalOpen(true);
     } catch (error) {
-      setModalMessage('An error occurred while updating the food item');
+      setError('An error occurred while updating the food item');
       setIsModalOpen(true);
     }
   };
 
   const handleDeleteFoodItem = async () => {
-    setError('');
-
     try {
       const url = foodItem.type === 'special' ? `/specialFood/${foodId}` : `/food/${foodId}`;
       await api.delete(url);
-
+      setInfo('Menu item deleted');
+      setIsModalOpen(true);
       navigate('/food-menu');
     } catch (error) {
-      setModalMessage('An error occurred while deleting the food item');
+      setError(error.message);
       setIsModalOpen(true);
     }
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalMessage('');
   };
 
   if (!foodItem) return <div>Loading...</div>;
@@ -134,6 +127,9 @@ const FoodItemDetailsPage = () => {
   return (
     <div className="food-item-details-page">
       <h1>Food Item Details</h1>
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+
       {foodItem.type === 'special' ? (
         <SpecialFoodDetails
           foodItem={foodItem}
@@ -165,7 +161,6 @@ const FoodItemDetailsPage = () => {
           setIngredients={setIngredients}
         />
       )}
-      <Modal isOpen={isModalOpen} message={modalMessage} onClose={closeModal} />
     </div>
   );
 };
