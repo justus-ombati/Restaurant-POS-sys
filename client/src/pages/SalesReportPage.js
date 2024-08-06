@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
 import { useNavigate } from 'react-router-dom';
 import SalesGraph from '../components/SalesGraph';
 
@@ -11,7 +12,9 @@ const SalesReportPage = () => {
   const [totalProfit, setTotalProfit] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10)); // Default to today
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +33,7 @@ const SalesReportPage = () => {
       } catch (error) {
         console.error('Error fetching sales data:', error);
         setError(error.response?.data?.message || 'Failed to fetch sales data');
+        setIsModalOpen(true);
       } finally {
         setIsLoading(false);
       }
@@ -78,6 +82,8 @@ const SalesReportPage = () => {
   return (
     <div className="sales-report-page">
       <h2>Sales Report</h2>
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
       
       <div className="filter-container">
         <label htmlFor="filter">Filter by:</label>
@@ -99,10 +105,6 @@ const SalesReportPage = () => {
       </div>
 
       {isLoading && <p>Fetching sales data...</p>}
-
-      {error && (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      )}
 
       {salesData.length > 0 && (
         <div className="sales-summary">

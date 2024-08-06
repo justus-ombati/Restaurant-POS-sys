@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
 
 const IngredientListPage = () => {
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchIngredients = async () => {
       setIsLoading(true);
-      setError(null);
+      setError('');
 
       try {
         const response = await api.get('/ingredient/');
@@ -19,6 +23,7 @@ const IngredientListPage = () => {
       } catch (error) {
         console.error('Error fetching ingredients:', error);
         setError(error.response?.data?.message || 'Failed to fetch ingredients');
+        setIsModalOpen(true);
       } finally {
         setIsLoading(false);
       }
@@ -30,14 +35,12 @@ const IngredientListPage = () => {
   return (
     <div className="ingredient-list-page">
       <h2>Ingredient List</h2>
-      <Link to="/ingredient/add-new-ingredient" className="add-new-button">
-        <Button type="primary" label="Add New" />
-      </Link>
+        <Button className="add-new-button" type="add" label="Add New" onClick={() =>navigate('/ingredient/add-new-ingredient')}/>
 
       {isLoading && <p>Loading ingredients...</p>}
-
-      {error && <p className="error-message">{error}</p>}
-
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      
       {ingredients.length > 0 && (
         <table>
           <thead>
@@ -57,9 +60,7 @@ const IngredientListPage = () => {
                 <td>{ingredient.pricePerUnit}</td>
                 <td>{(ingredient.amount * ingredient.pricePerUnit).toFixed(2)}</td>
                 <td>
-                  <Link to={`/ingredient/${ingredient._id}`}>
-                    <Button type="text" label="View" />
-                  </Link>
+                  <Button type="view" label="View" onClick={() => navigate(`/ingredient/${ingredient._id}`)}/>
                   {/* Add Delete Button Logic Here */}
                 </td>
               </tr>

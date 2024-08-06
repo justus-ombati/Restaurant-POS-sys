@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
 
 const UserDetailsPage = () => {
   const { id } = useParams();
@@ -39,6 +40,8 @@ const UserDetailsPage = () => {
         setRoles(response.data.data); // Assuming data.data contains role objects
       } catch (error) {
         console.error('Error fetching roles:', error);
+        setError(error.message || 'Error fetching roles');
+        setIsModalOpen(true);
       }
     };
 

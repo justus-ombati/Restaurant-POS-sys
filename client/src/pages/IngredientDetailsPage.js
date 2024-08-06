@@ -9,9 +9,9 @@ const IngredientDetailsPage = () => {
   const navigate = useNavigate();
 
   const [ingredient, setIngredient] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);  
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -20,7 +20,6 @@ const IngredientDetailsPage = () => {
 
   useEffect(() => {
     const fetchIngredient = async () => {
-      setIsLoading(true);
       setError(null);
 
       try {
@@ -34,11 +33,9 @@ const IngredientDetailsPage = () => {
       } catch (error) {
         console.error('Error fetching ingredient:', error);
         setError(error.response?.data?.message || 'Failed to fetch ingredient');
-      } finally {
-        setIsLoading(false);
-      }
+        setIsModalOpen(true);
     };
-
+  }
     fetchIngredient();
   }, [id]);
 
@@ -68,8 +65,7 @@ const IngredientDetailsPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
-    setError(null);
+    setError('');
 
     try {
       const updatedIngredient = {
@@ -80,12 +76,12 @@ const IngredientDetailsPage = () => {
       };
       const response = await api.patch(`/ingredient/${id}`, updatedIngredient);
       setSuccess('Ingredient details updated successfully!');
+      setIsModalOpen(true);
       setIngredient(response.data.data);
     } catch (error) {
       console.error('Error updating ingredient:', error);
       setError(error.response?.data?.message || 'Failed to update ingredient');
-    } finally {
-      setIsLoading(false);
+      setIsModalOpen(true);
     }
   };
 
@@ -97,6 +93,7 @@ const IngredientDetailsPage = () => {
       } catch (error) {
         console.error('Error deleting ingredient:', error);
         setError(error.response?.data?.message || 'Failed to delete ingredient');
+        setIsModalOpen(true);
       }
     }
   };
@@ -104,23 +101,13 @@ const IngredientDetailsPage = () => {
   return (
     <div className="ingredient-details-page">
       <h2>Ingredient Details</h2>
+      {/* {isLoading && <p>Loading ingredient details...</p>} */}
   
-      {isLoading && <p>Loading ingredient details...</p>}
-  
-      {error && (
-        <Modal type="error" title="Error" message={error} isOpen={!!error} onClose={() => setError(null)}>
-          <Button type="text" label="Close" onClick={() => setError(null)} />
-        </Modal>
-      )}
-  
-      {success && (
-        <Modal type="success" title="Success" message={success} isOpen={!!success} onClose={() => setSuccess(null)}>
-          <Button type="text" label="Close" onClick={() => setSuccess(null)} />
-        </Modal>
-      )}
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
   
       {ingredient && (
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="form-group">
             <label htmlFor="name">Name:</label>
             <input
@@ -172,7 +159,7 @@ const IngredientDetailsPage = () => {
             <span>{calculateTotalValue()}</span>
           </div>
           <div className="button-group">
-            <Button type="primary" label="Save Changes" disabled={isLoading} />
+            <Button type="save" label="Save Changes" onClick={handleSubmit} />
             <Button type="danger" label="Delete" onClick={handleDelete} />
           </div>
         </form>

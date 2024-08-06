@@ -3,6 +3,7 @@ import api from '../api';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
 import '../styles/foodListPage.css';
 
 const FoodListPage = () => {
@@ -11,6 +12,10 @@ const FoodListPage = () => {
   const [foods, setFoods] = useState([]);
   const [specialFoods, setSpecialFoods] = useState([]);
   const [activeTab, setActiveTab] = useState('special');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     if (!user || user.role !== 'manager') {
@@ -32,6 +37,8 @@ const FoodListPage = () => {
         setSpecialFoods(specialFoodsRes.data.data);
       } catch (error) {
         console.error('Error fetching foods:', error);
+        setError(error.message);
+        setIsModalOpen(true);
       }
     };
 
@@ -42,20 +49,23 @@ const FoodListPage = () => {
   return (
     <div className="food-item-list-page">
       <h1>Food Items</h1>
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+
       <Button type='add' label="Add New" onClick={() => navigate('/food/add-new-food')} style={{ float: 'right' }} />
       <div className="tabs">
-        <button
+        <Button
           className={activeTab === 'special' ? 'active' : ''}
           onClick={() => setActiveTab('special')}
-        >
-          Special Foods
-        </button>
-        <button
+          label='Special Foods'
+          type='view'
+        />
+        <Button
+          type='view'
           className={activeTab === 'regular' ? 'active' : ''}
           onClick={() => setActiveTab('regular')}
-        >
-          Regular Foods
-        </button>
+          label='Regular Foods'
+        />
       </div>
       <div className="tab-content">
         {activeTab === 'special' ? (

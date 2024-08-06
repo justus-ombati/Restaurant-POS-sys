@@ -12,7 +12,6 @@ function OrderListPage() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [info, setInfo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -26,8 +25,7 @@ function OrderListPage() {
         setOrders(response.data.data);
 
         if (response.data.totalOrders === 0) {
-          setInfo('No Orders to show');
-          setIsModalOpen(true);
+          return <div> No orders to show!</div>
         }
       } catch (error) {
         console.error('Error fetching orders:', error);
@@ -41,13 +39,6 @@ function OrderListPage() {
 
   const handleStatusChange = (event) => {
     setStatusFilter(event.target.value);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setError(null);
-    setSuccess(null);
-    setInfo(null);
   };
 
   const handleViewOrder = (orderId) => {
@@ -115,7 +106,6 @@ function OrderListPage() {
       <h1>Order List</h1>
       {error && <Modal type='error' title='Error' message={error} isOpen={isModalOpen} onClose={closeModal} />}
       {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
-      {info && <Modal type='info' title='Info' message={info} isOpen={isModalOpen} onClose={closeModal} />}
       <div className="filter">
         <label htmlFor="statusFilter">Filter by Status:</label>
         <select id="statusFilter" value={statusFilter} onChange={handleStatusChange}>

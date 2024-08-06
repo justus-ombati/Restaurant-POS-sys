@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../api';
+import Button from '../components/Button';
+import Modal from '../components/Modal';
 import { useParams } from 'react-router-dom';
 import printJS from 'print-js';
 
@@ -7,7 +9,9 @@ const SaleDetailsPage = () => {
   const { saleId } = useParams();
   const [saleDetails, setSaleDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const printRef = useRef(null);
 
   useEffect(() => {
@@ -21,6 +25,7 @@ const SaleDetailsPage = () => {
       } catch (error) {
         console.error('Error fetching sale details:', error);
         setError(error.response?.data?.message || 'Failed to fetch sale details');
+        setIsModalOpen(true);
       } finally {
         setIsLoading(false);
       }
@@ -60,11 +65,9 @@ const SaleDetailsPage = () => {
       <h2>Sale Details</h2>
 
       {isLoading && <p>Fetching sale details...</p>}
-
-      {error && (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      )}
-
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      
       {saleDetails._id && (
         <div id="sale-details" ref={printRef}>
           <p>Transaction ID: {saleDetails._id}</p>

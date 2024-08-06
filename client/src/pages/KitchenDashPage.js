@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import Modal from '../components/Modal';
+import Button from '../components/Button';
 
 const KitchenStaffDashboard = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [dailyReadyOrders, setDailyReadyOrders] = useState([]);
-  
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   useEffect(() => {
     const fetchOrders = async () => {
@@ -23,13 +27,14 @@ const KitchenStaffDashboard = () => {
         }
         } catch (error) {
         console.error('Error fetching orders:', error);
-        // setError('Error fetching orders!');
+        setError('Error fetching orders!');
+        setIsModalOpen(true);
         }
     };
 
     fetchOrders();
 
-    }, [ statusFilter ]);
+    }, [statusFilter]);
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
@@ -47,9 +52,28 @@ const KitchenStaffDashboard = () => {
     setStatusFilter(event.target.value);
   };
 
+  const handleConfirmOrder = async(orderId) => {
+    try {
+      const response = await api.patch(`/order/confirm/${orderId}`);
+      setSuccess('Order confirmed');
+      setIsModalOpen(true);
+      setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+      order._id === orderId ? { ...order, status: 'In Preparation'} : order
+    ));
+    }catch(error){
+      console.error('Error updating order status:', error);
+      setError('Error updating order status.' || error.message);
+      setIsModalOpen(true);
+    };
+  };
   return (
     <div className="kitchen-dashboard">
+
       <h2>Order Queue</h2>
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+
       <select id="statusFilter" value={statusFilter} onChange={handleStatusChange}>
         <option value="All">All</option>
         <option value="Pending">Pending</option>
@@ -73,14 +97,16 @@ const KitchenStaffDashboard = () => {
               <td>{order.totalAmount}</td>
               <td>{order.status}</td>
               <td>
-                {order.status === 'Pending' && <button>Accept</button>}
-                {(order.status === 'In Preparation' || order.status === 'Cancelled') && <button>View</button>}
+                {order.status === 'Pending' && 
+                  <Button type='accept' label='Accept' onClick={() => handleConfirmOrder(order._id)}/>}
+                {(order.status === 'In Preparation' || order.status === 'Cancelled') &&
+                  <Button type='view' label='View' onClick={() => navigate(`/order/${order.id}`)}/>}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={() => navigate('/orders')}>View All</button>
+      <Button type='view' onClick={() => navigate('/orders')} label='View All' />
 
       <h2>Daily Summary</h2>
       <p>No. of Orders: {dailyReadyOrders.length}</p>

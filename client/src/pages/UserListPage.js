@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
 
 const UserListPage = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,6 +23,7 @@ const UserListPage = () => {
       } catch (error) {
         console.error('Error fetching users:', error);
         setError(error.response?.data?.message || 'Failed to fetch users');
+        setIsModalOpen(true);
       } finally {
         setIsLoading(false);
       }
@@ -34,13 +38,10 @@ const UserListPage = () => {
 
       {isLoading && <p>Loading users...</p>}
 
-      {error && (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      )}
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
 
-      <Link to="/user/create-user" style={{ float: 'right' }}>
-        <Button type="primary" label="Add New" />
-      </Link>
+      <Button type="primary" label="Add New" onClick={() => navigate('/user/create-user')}/>
 
       <table>
         <thead>
@@ -58,7 +59,7 @@ const UserListPage = () => {
               <td>{user.name}</td>
               <td>{user.role}</td>
               <td>
-                <Link to={`/user/${user._id}`}>View</Link>
+                <Button type='view' label='View' onClick={() => navigate(`/user/${user._id}`)} />
               </td>
             </tr>
           ))}

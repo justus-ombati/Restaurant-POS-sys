@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/Button';
+import Modal from '../components/Modal';
 
 const WaitstaffDashboard = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [dailyCompletedOrders, setDailyCompletedOrders] = useState([]);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -24,8 +29,8 @@ const WaitstaffDashboard = () => {
         setOrders(response.data.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
-        // Handle errors (consider setting an error state or displaying an error message)
-      }
+        setError(error.response?.data?.message || 'Error fetching orders');
+        setIsModalOpen(true);      }
     };
 
     fetchOrders();
@@ -47,6 +52,9 @@ const WaitstaffDashboard = () => {
 
   return (
     <div className="waitstaff-dashboard">
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+
       <h2>Order Management</h2>
       <button onClick={() => navigate('/order')}>Create Order</button>
       <select id="statusFilter" value={statusFilter} onChange={handleStatusChange}>

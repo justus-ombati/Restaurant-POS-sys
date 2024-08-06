@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import Button from '../components/Button';
+import Modal from '../components/Modal';
 
 const InventoryStatusPage = () => {
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchIngredients = async () => {
       setIsLoading(true);
-      setError(null);
+      setError('');
 
       try {
         const response = await api.get('/ingredient');
@@ -18,6 +22,7 @@ const InventoryStatusPage = () => {
       } catch (error) {
         console.error('Error fetching ingredients:', error);
         setError(error.response?.data?.message || 'Failed to fetch ingredients');
+        setIsModalOpen(true);
       } finally {
         setIsLoading(false);
       }
@@ -48,10 +53,8 @@ const InventoryStatusPage = () => {
       <h2>Inventory Status</h2>
 
       {isLoading && <p>Loading inventory data...</p>}
-
-      {error && (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      )}
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
 
       {/* Inventory overview section */}
       <section>

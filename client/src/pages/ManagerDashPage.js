@@ -3,11 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import SalesGraph from '../components/SalesGraph'; // Replace with your SalesGraph component path
 import Headline from '../components/Headline'; // Replace with your Headline component path
 import api from '../api';
+import Modal from '../components/Modal';
+import Button from '../components/Button';
 
 const ManagerDashboard = () => {
   const navigate = useNavigate();
   const [inventoryData, setInventoryData] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getStockStatus = (quantity) => {
     if (!inventoryData) return 'Data Unavailable'; // Return a message if no data
@@ -25,6 +30,8 @@ const ManagerDashboard = () => {
         setInventoryData(response.data.data.slice(0, 5)); // Show only top 5 items
       } catch (error) {
         console.error('Error fetching inventory data:', error);
+        setError(error.message || 'Error fetching inventory data');
+        setIsModalOpen(true);
       }
     };
 
@@ -34,6 +41,8 @@ const ManagerDashboard = () => {
         setOrders(response.data.data);
       } catch (error) {
         console.error('Error fetching orders data:', error);
+        setError(error.message || 'Error fetching orders data');
+        setIsModalOpen(true);
       }
     };
 
@@ -43,6 +52,8 @@ const ManagerDashboard = () => {
 
   return (
     <div className="manager-dashboard">
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
+      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
       <h2>Sales And Profit Analysis</h2>
       <Headline />
 
