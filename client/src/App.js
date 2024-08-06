@@ -6,7 +6,7 @@ import AdminDashboard from './pages/AdminDashPage';
 import KitchenStaffDashboard from './pages/KitchenDashPage';
 import WaitstaffDashboard from './pages/WaitstaffDashPage';
 import ManagerDashboard from './pages/ManagerDashPage';
-import IngredientListPage from './pages/IngredientListPage';
+import InventoryListPage from './pages/InventoryListPage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
 import OrderEntryPage from './pages/OrderEntryPage';
@@ -16,8 +16,8 @@ import EditOrderPage from './pages/EditOrderPage';
 import AddNewFoodPage from './pages/AddNewFoodPage';
 import FoodListPage from './pages/FoodListPage';
 import FoodItemDetailsPage from './pages/FoodItemDetailsPage';
-import AddNewIngredientPage from './pages/AddNewIngredientPage';
-import IngredientDetailsPage from './pages/IngredientDetailsPage';
+import AddNewInventoryPage from './pages/AddNewInventoryPage';
+import InventoryDetailsPage from './pages/InventoryDetailsPage';
 import InventoryStatusPage from './pages/InventoryStatusPage';
 import UserListPage from './pages/UserListPage';
 import UserDetailsPage from './pages/UserDetailsPage';
@@ -68,6 +68,7 @@ const SalesLayout = () => (
   </div>
 );
 
+
 return (
   <AuthProvider>
     <Router>
@@ -95,9 +96,9 @@ return (
 
             {/* Inventory Section */}
             <Route path="inventory" element={<InventoryLayout />}>
-              <Route path="" element={<IngredientListPage />} />
-              <Route path="add-new-ingredient" element={<AddNewIngredientPage />} />
-              <Route path="ingredient-details/:id" element={<IngredientDetailsPage />} />
+              <Route path="" element={<InventoryListPage />} />
+              <Route path="add-new-inventory" element={<AddNewInventoryPage />} />
+              <Route path="inventory/:id" element={<InventoryDetailsPage />} />
               <Route path="inventory-status" element={<InventoryStatusPage />} />
             </Route>
 

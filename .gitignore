@@ -8,6 +8,7 @@ server/config.env
 client/.env
 client/.pnp
 .pnp.js
+.vscode
 
 
 # testing

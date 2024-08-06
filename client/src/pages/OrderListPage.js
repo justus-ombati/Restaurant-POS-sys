@@ -104,8 +104,8 @@ function OrderListPage() {
   return (
     <div className="order-list-page">
       <h1>Order List</h1>
-      {error && <Modal type='error' title='Error' message={error} isOpen={isModalOpen} onClose={closeModal} />}
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
+      {error && <Modal type='error' title='Error' message={error} isOpen={isModalOpen} />}
+      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} />}
       <div className="filter">
         <label htmlFor="statusFilter">Filter by Status:</label>
         <select id="statusFilter" value={statusFilter} onChange={handleStatusChange}>

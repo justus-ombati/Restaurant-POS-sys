@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../api';
 import Headline from '../components/Headline';
 import SalesGraph from '../components/SalesGraph';
+import Modal from '../components/Modal';
 
 const AdminDashboard = () => {
   const [error, setError] = useState('');

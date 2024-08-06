@@ -40,7 +40,7 @@ const AddNewIngredientPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFoodItem((prev) => ({ ...prev, [name]: value }));
+    setInventoryItem((prev) => ({ ...prev, [name]: value }));
   };
   return (
     <div className="add-new-ingredient">

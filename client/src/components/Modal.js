@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Icon from './Icon';
 import close from '../icons/close.png';
 import '../styles/modal.css';
 
 const Modal = ({ type, title, message, isOpen }) => {
-  if (!isOpen) return null;
-
   const modalClass = `modal ${type}`;
-  
+  const [ isModalOpen, setIsModalOpen ] = useState(false);
+
   const closeModal = () => {
     setTimeout(() => {
       setIsModalOpen(false);
@@ -43,7 +42,6 @@ Modal.propTypes = {
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
   actions: PropTypes.node,
 };
 

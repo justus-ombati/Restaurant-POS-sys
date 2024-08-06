@@ -60,7 +60,7 @@ const IngredientListPage = () => {
                 <td>{ingredient.pricePerUnit}</td>
                 <td>{(ingredient.amount * ingredient.pricePerUnit).toFixed(2)}</td>
                 <td>
-                  <Button type="view" label="View" onClick={() => navigate(`/ingredient/${ingredient._id}`)}/>
+                  <Button type="view" label="View" onClick={() => navigate(`/inventory/${ingredient._id}`)}/>
                   {/* Add Delete Button Logic Here */}
                 </td>
               </tr>
