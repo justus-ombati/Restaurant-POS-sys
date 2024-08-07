@@ -33,9 +33,9 @@ function OrderDetailPage() {
   }, [orderId]);
 
   const closeModal = () => {
-    setIsModalOpen(false);
-    setError(null);
-    setSuccess(null);
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
   };
 
   const handleCancelOrder = async () => {

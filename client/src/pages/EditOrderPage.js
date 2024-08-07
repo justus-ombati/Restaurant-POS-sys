@@ -132,6 +132,12 @@ const EditOrderPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="edit-order-page">
       <h1>Edit Order</h1>

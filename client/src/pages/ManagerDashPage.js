@@ -50,6 +50,12 @@ const ManagerDashboard = () => {
     fetchOrders();
   }, []);
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="manager-dashboard">
       {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}

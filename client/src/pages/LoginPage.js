@@ -31,6 +31,12 @@ function LoginPage() {
     }
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+
   return (
     <div className="login-page">
       <h1>Login</h1>
@@ -57,8 +63,24 @@ function LoginPage() {
         </div>
         <Button type="submit" label="Login" />
       </form>
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} />}
-      {error && <Modal type="error" title="Login Error" message={error} isOpen={isModalOpen} />}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 }

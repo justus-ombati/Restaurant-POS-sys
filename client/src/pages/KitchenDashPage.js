@@ -52,6 +52,12 @@ const KitchenStaffDashboard = () => {
     setStatusFilter(event.target.value);
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   const handleConfirmOrder = async(orderId) => {
     try {
       const response = await api.patch(`/order/confirm/${orderId}`);

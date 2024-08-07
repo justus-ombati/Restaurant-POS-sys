@@ -81,6 +81,12 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   console.log(inventoryData);
   console.log(inventorySummary);
   console.log(recentOrders);

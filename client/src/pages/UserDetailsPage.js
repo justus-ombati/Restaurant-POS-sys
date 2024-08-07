@@ -67,6 +67,11 @@ const UserDetailsPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
   return (
     <div className="user-details-page">
       <h2>User Details</h2>

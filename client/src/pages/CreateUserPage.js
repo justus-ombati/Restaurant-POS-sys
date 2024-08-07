@@ -51,6 +51,12 @@ const CreateUserPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="create-user-page">
       {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}

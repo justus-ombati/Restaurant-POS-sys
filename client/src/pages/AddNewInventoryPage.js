@@ -42,6 +42,12 @@ const AddNewIngredientPage = () => {
     const { name, value } = e.target;
     setInventoryItem((prev) => ({ ...prev, [name]: value }));
   };
+
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
   return (
     <div className="add-new-ingredient">
       {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}

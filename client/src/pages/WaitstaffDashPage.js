@@ -50,6 +50,12 @@ const WaitstaffDashboard = () => {
     setStatusFilter(event.target.value);
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="waitstaff-dashboard">
       {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}

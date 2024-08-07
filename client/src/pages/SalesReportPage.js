@@ -79,6 +79,12 @@ const SalesReportPage = () => {
     navigate(`/sales/${saleId}`)
   }
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+
   return (
     <div className="sales-report-page">
       <h2>Sales Report</h2>

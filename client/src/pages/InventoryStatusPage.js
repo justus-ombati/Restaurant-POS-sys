@@ -48,6 +48,12 @@ const InventoryStatusPage = () => {
     return 'In plenty';
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="inventory-status-page">
       <h2>Inventory Status</h2>

@@ -32,6 +32,12 @@ const UserListPage = () => {
     fetchUsers();
   }, []);
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="user-list-page">
       <h2>Users</h2>

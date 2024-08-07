@@ -118,11 +118,11 @@ const AddNewFoodPage = () => {
     }
   };
 
-  // const closeModal = () => {
-  //   setTimeout(() => {
-  //     setIsModalOpen(false);
-  //   }, 300);
-  // };
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
 
   return (
     <div className="add-new-food-page">

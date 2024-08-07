@@ -101,6 +101,12 @@ function OrderListPage() {
     }
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+
   return (
     <div className="order-list-page">
       <h1>Order List</h1>

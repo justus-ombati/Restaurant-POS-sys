@@ -99,7 +99,9 @@ function OrderEntryPage() {
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
   };
 
   return (

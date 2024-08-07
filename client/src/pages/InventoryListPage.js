@@ -32,6 +32,12 @@ const IngredientListPage = () => {
     fetchIngredients();
   }, []);
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="ingredient-list-page">
       <h2>Ingredient List</h2>

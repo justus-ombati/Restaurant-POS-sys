@@ -98,6 +98,12 @@ const IngredientDetailsPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="ingredient-details-page">
       <h2>Ingredient Details</h2>

@@ -122,6 +122,12 @@ const FoodItemDetailsPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   if (!foodItem) return <div>Loading...</div>;
 
   return (

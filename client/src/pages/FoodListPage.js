@@ -46,6 +46,12 @@ const FoodListPage = () => {
     navigate(`/food/${foodId}`);
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+  
   return (
     <div className="food-item-list-page">
       <h1>Food Items</h1>

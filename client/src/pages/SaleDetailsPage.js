@@ -60,6 +60,12 @@ const SaleDetailsPage = () => {
     });
   };
 
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 300);
+  };
+
   return (
     <div className="sales-detail-page">
       <h2>Sale Details</h2>
