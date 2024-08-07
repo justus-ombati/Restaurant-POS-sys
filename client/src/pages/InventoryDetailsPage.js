@@ -103,14 +103,30 @@ const IngredientDetailsPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   return (
     <div className="ingredient-details-page">
       <h2>Ingredient Details</h2>
       {/* {isLoading && <p>Loading ingredient details...</p>} */}
   
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
   
       {ingredient && (
         <form>

@@ -57,7 +57,7 @@ const KitchenStaffDashboard = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   const handleConfirmOrder = async(orderId) => {
     try {
       const response = await api.patch(`/order/confirm/${orderId}`);
@@ -77,8 +77,24 @@ const KitchenStaffDashboard = () => {
     <div className="kitchen-dashboard">
 
       <h2>Order Queue</h2>
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
 
       <select id="statusFilter" value={statusFilter} onChange={handleStatusChange}>
         <option value="All">All</option>

@@ -127,15 +127,30 @@ const FoodItemDetailsPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   if (!foodItem) return <div>Loading...</div>;
 
   return (
     <div className="food-item-details-page">
       <h1>Food Item Details</h1>
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
-
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       {foodItem.type === 'special' ? (
         <SpecialFoodDetails
           foodItem={foodItem}

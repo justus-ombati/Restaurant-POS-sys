@@ -137,12 +137,28 @@ const EditOrderPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   return (
     <div className="edit-order-page">
       <h1>Edit Order</h1>
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       
       {order && <h2>Order ID: {order._id}</h2>}
       <form onSubmit={handleSubmit}>

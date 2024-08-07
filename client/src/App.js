@@ -81,37 +81,37 @@ return (
 
             {/* Orders Section */}
             <Route path="orders" element={<OrdersLayout />}>
-              <Route path="" element={<OrderListPage />} />
+              <Route index element={<OrderListPage />} />
               <Route path="order-entry" element={<OrderEntryPage />} />
-              <Route path="order/:orderId" element={<OrderDetailPage />} />
+              <Route path=":orderId" element={<OrderDetailPage />} />
               <Route path="edit-order/:orderId" element={<EditOrderPage />} />
             </Route>
 
             {/* Menu Section */}
             <Route path="menu" element={<MenuLayout />}>
-              <Route path="" element={<FoodListPage />} />
+              <Route index element={<FoodListPage />} />
               <Route path="add-new-food" element={<AddNewFoodPage />} />
               <Route path="menu-item-details/:foodId" element={<FoodItemDetailsPage />} />
             </Route>
 
             {/* Inventory Section */}
             <Route path="inventory" element={<InventoryLayout />}>
-              <Route path="" element={<InventoryListPage />} />
+              <Route index element={<InventoryListPage />} />
               <Route path="add-new-inventory" element={<AddNewInventoryPage />} />
-              <Route path="inventory/:id" element={<InventoryDetailsPage />} />
+              <Route path=":id" element={<InventoryDetailsPage />} />
               <Route path="inventory-status" element={<InventoryStatusPage />} />
             </Route>
 
             {/* Users Section */}
-            <Route path="users" element={<UsersLayout />}>
-              <Route path="" element={<UserListPage />} />
+            <Route path="users/" element={<UsersLayout />}>
+              <Route index element={<UserListPage />} />
               <Route path="create-user" element={<CreateUserPage />} />
-              <Route path="user-details/:id" element={<UserDetailsPage />} />
+              <Route path=":id" element={<UserDetailsPage />} />
             </Route>
 
             {/* Sales Section */}
             <Route path="sales" element={<SalesLayout />}>
-              <Route path="" element={<SalesReportPage />} />
+              <Route index element={<SalesReportPage />} />
               <Route path="sale-details/:saleId" element={<SaleDetailsPage />} />
             </Route>
 

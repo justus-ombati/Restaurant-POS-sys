@@ -126,8 +126,24 @@ const AddNewFoodPage = () => {
 
   return (
     <div className="add-new-food-page">
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} />}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen} />}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       <h1>Add New Food Item</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

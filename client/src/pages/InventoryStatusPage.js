@@ -53,14 +53,30 @@ const InventoryStatusPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   return (
     <div className="inventory-status-page">
       <h2>Inventory Status</h2>
 
       {isLoading && <p>Loading inventory data...</p>}
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
 
       {/* Inventory overview section */}
       <section>

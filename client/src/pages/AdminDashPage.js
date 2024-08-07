@@ -86,15 +86,31 @@ const AdminDashboard = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   console.log(inventoryData);
   console.log(inventorySummary);
   console.log(recentOrders);
 
   return (
     <div className="admin-dashboard">
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       <h2>Admin Dashboard</h2>
       <Headline />
       <div className="sales-trends">

@@ -51,12 +51,28 @@ const FoodListPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   return (
     <div className="food-item-list-page">
       <h1>Food Items</h1>
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
 
       <Button type='add' label="Add New" onClick={() => navigate('/food/add-new-food')} style={{ float: 'right' }} />
       <div className="tabs">

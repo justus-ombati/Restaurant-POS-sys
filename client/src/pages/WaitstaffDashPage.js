@@ -55,11 +55,27 @@ const WaitstaffDashboard = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   return (
     <div className="waitstaff-dashboard">
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
 
       <h2>Order Management</h2>
       <button onClick={() => navigate('/order')}>Create Order</button>

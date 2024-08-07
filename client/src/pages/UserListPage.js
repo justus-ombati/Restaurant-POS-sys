@@ -37,17 +37,33 @@ const UserListPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   return (
     <div className="user-list-page">
       <h2>Users</h2>
 
       {isLoading && <p>Loading users...</p>}
 
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
 
-      <Button type="primary" label="Add New" onClick={() => navigate('/user/create-user')}/>
+      <Button type="primary" label="Add New" onClick={() => navigate('/users/create-user')}/>
 
       <table>
         <thead>
@@ -65,7 +81,7 @@ const UserListPage = () => {
               <td>{user.name}</td>
               <td>{user.role}</td>
               <td>
-                <Button type='view' label='View' onClick={() => navigate(`/user/${user._id}`)} />
+                <Button type='view' label='View' onClick={() => navigate(`${user._id}`)} />
               </td>
             </tr>
           ))}

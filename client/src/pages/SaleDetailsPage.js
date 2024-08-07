@@ -71,8 +71,24 @@ const SaleDetailsPage = () => {
       <h2>Sale Details</h2>
 
       {isLoading && <p>Fetching sale details...</p>}
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       
       {saleDetails._id && (
         <div id="sale-details" ref={printRef}>

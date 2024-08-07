@@ -37,15 +37,31 @@ const IngredientListPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
-  
+
   return (
     <div className="ingredient-list-page">
       <h2>Ingredient List</h2>
         <Button className="add-new-button" type="add" label="Add New" onClick={() =>navigate('/ingredient/add-new-ingredient')}/>
 
       {isLoading && <p>Loading ingredients...</p>}
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen}/>}
-      {error && <Modal type="error" title="Error" message={error} isOpen={isModalOpen}/>}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       
       {ingredients.length > 0 && (
         <table>

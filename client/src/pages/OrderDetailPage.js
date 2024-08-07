@@ -102,8 +102,24 @@ function OrderDetailPage() {
   return (
     <div className="order-detail-page">
       <h1>Order Detail</h1>
-      {error && <Modal type='error' title='Error' message={error} isOpen={isModalOpen} onClose={closeModal} />}
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       <div className="order-info">
         <p><strong>Order ID:</strong> {order._id}</p>
         <p><strong>Table No.:</strong> {order.tableNumber}</p>

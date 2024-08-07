@@ -107,8 +107,24 @@ function OrderEntryPage() {
   return (
     <div className="order-entry-page">
       <h1>Order Entry</h1>
-      {error && <Modal type='error' title='Error' message={error} isOpen={isModalOpen} onClose={closeModal} />}
-      {success && <Modal type='success' title='Success' message={success} isOpen={isModalOpen} onClose={closeModal} />}
+      {isModalOpen && success && (
+        <Modal
+          type='success'
+          title='Success'
+          message={success}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
+      {isModalOpen && error && (
+        <Modal
+          type="error"
+          title="Login Error"
+          message={error}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
       <div className="order-form">
         <div className="form-group">
           <label htmlFor="tableNumber">Table Number:</label>
