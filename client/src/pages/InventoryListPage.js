@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
+import { AuthContext } from '../context/AuthContext';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 
 const IngredientListPage = () => {
+  const { user } = useContext(AuthContext);
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -41,7 +43,7 @@ const IngredientListPage = () => {
   return (
     <div className="ingredient-list-page">
       <h2>Ingredient List</h2>
-        <Button className="add-new-button" type="add" label="Add New" onClick={() =>navigate('/ingredient/add-new-ingredient')}/>
+        {user.role !== 'admin' && <Button className="add-new-button" type="add" label="Add New" onClick={() =>navigate('/inventory/add')}/>}
 
       {isLoading && <p>Loading ingredients...</p>}
       {isModalOpen && success && (

@@ -97,13 +97,13 @@ return (
             {/* Inventory Section */}
             <Route path="inventory" element={<InventoryLayout />}>
               <Route index element={<InventoryListPage />} />
-              <Route path="add-new-inventory" element={<AddNewInventoryPage />} />
+              <Route path="add" element={<AddNewInventoryPage />} />
               <Route path=":id" element={<InventoryDetailsPage />} />
               <Route path="inventory-status" element={<InventoryStatusPage />} />
             </Route>
 
             {/* Users Section */}
-            <Route path="users/" element={<UsersLayout />}>
+            <Route path="users" element={<UsersLayout />}>
               <Route index element={<UserListPage />} />
               <Route path="create-user" element={<CreateUserPage />} />
               <Route path=":id" element={<UserDetailsPage />} />

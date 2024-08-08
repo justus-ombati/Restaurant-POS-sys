@@ -17,12 +17,7 @@ const AddNewIngredientPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/ingredient', {
-        name: inventoryItem.name,
-        category: inventoryItem.category,
-        amount: inventoryItem.amount,
-        pricePerUnit: inventoryItem.pricePerUnit
-      });
+      const response = await api.post('/ingredient', inventoryItem);
       setSuccess('Ingredient added successfully!');
       setIsModalOpen(true);
       setInventoryItem({
@@ -33,7 +28,7 @@ const AddNewIngredientPage = () => {
       });
     } catch (error) {
       console.error('Error adding ingredient:', error);
-      setError(error.message);
+      setError(error.response?.data?.message);
       setIsModalOpen(true);
     }
   };
@@ -48,6 +43,7 @@ const AddNewIngredientPage = () => {
       setIsModalOpen(false);
     }, 300);
   };
+
   return (
     <div className="add-new-ingredient">
       {isModalOpen && success && (
@@ -62,7 +58,7 @@ const AddNewIngredientPage = () => {
       {isModalOpen && error && (
         <Modal
           type="error"
-          title="Login Error"
+          title="Error"
           message={error}
           isOpen={isModalOpen}
           onClose={closeModal}
@@ -72,21 +68,51 @@ const AddNewIngredientPage = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" value={inventoryItem.name} onChange={handleInputChange} required />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={inventoryItem.name}
+            onChange={handleInputChange}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="category">Category:</label>
-          <input type="text" id="category" value={inventoryItem.category} onChange={handleInputChange} required />
+          <input
+            type="text"
+            id="category"
+            name="category"
+            value={inventoryItem.category}
+            onChange={handleInputChange}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="amount">Quantity (KG/L):</label>
-          <input type="number" id="amount" value={inventoryItem.amount} onChange={handleInputChange} min={0} required />
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            value={inventoryItem.amount}
+            onChange={handleInputChange}
+            min={0}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="pricePerUnit">Price per Unit (Ksh):</label>
-          <input type="number" id="pricePerUnit" value={inventoryItem.pricePerUnit} onChange={handleInputChange} min={0} required />
+          <input
+            type="number"
+            id="pricePerUnit"
+            name="pricePerUnit"
+            value={inventoryItem.pricePerUnit}
+            onChange={handleInputChange}
+            min={0}
+            required
+          />
         </div>
-        <Button type="save" label="Save" onClick={handleSubmit} />
+        <Button type="submit" label="Save" />
       </form>
     </div>
   );
