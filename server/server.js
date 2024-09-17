@@ -28,7 +28,7 @@ const app = express();
 app.use(express.json());
 // Set up CORS
 app.use(cors({
-    origin: process.env.CLIENT_URL
+    origin: process.env.CORS_ORIGIN
 }));
 
 //Routes
