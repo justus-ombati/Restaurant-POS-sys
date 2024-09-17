@@ -70,7 +70,7 @@ const ManagerDashboard = () => {
       {isModalOpen && error && (
         <Modal
           type="error"
-          title="Login Error"
+          title="Error"
           message={error}
           isOpen={isModalOpen}
           onClose={closeModal}

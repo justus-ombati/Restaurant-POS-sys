@@ -21,7 +21,17 @@ function LoginPage() {
     try {
       const credentials = { idNumber, pin };
       const { user } = await login(credentials);
-      navigate('/inventory');
+      
+      // Redirect based on the role
+      if (user.role === 'admin') {
+        navigate('/admin-dash');
+      } else if (user.role === 'manager') {
+        navigate('/manager-dash');
+      } else if (user.role === 'waitstaff') {
+        navigate('/waitstaff-dash');
+      } else if (user.role === 'kitchen') {
+        navigate('/kitchen-dash');
+      }
       setSuccess('Logged in successfully');
       setIsModalOpen(true);
     } catch (error) {
