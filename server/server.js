@@ -27,9 +27,21 @@ const app = express();
 // Middleware
 app.use(express.json());
 // Set up CORS
-app.use(cors({
-    origin: process.env.CORS_ORIGIN
-}));
+const allowedOrigins = ['https://restrantpos.netlify.app'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // if you're sending cookies or need credentials
+};
+
+app.use(cors(corsOptions));
+
 
 //Routes
 app.use('/user', userRouter);

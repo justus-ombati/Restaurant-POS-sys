@@ -29,10 +29,10 @@ exports.createFood = asyncErrorHandler(async (req, res, next) => {
         cost,
         sellingPrice
     });
-    const food = await Food.create(newFood);
+
     res.status(201).json({
         status: 'success',
-        data: food
+        data: newFood
     });
 });
 
