@@ -76,7 +76,7 @@ const SalesReportPage = () => {
   }
 
   const handleViewSale = (saleId) => {
-    navigate(`/sales/${saleId}`)
+    navigate(`/${saleId}`)
   }
 
   const closeModal = () => {

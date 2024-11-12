@@ -68,7 +68,6 @@ const SalesLayout = () => (
   </div>
 );
 
-
 return (
   <AuthProvider>
     <Router>
@@ -112,7 +111,7 @@ return (
             {/* Sales Section */}
             <Route path="sales" element={<SalesLayout />}>
               <Route index element={<SalesReportPage />} />
-              <Route path="sale-details/:saleId" element={<SaleDetailsPage />} />
+              <Route path="/:saleId" element={<SaleDetailsPage />} />
             </Route>
 
             {/* Additional Routes */}
