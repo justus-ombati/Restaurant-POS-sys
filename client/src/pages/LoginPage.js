@@ -21,7 +21,7 @@ function LoginPage() {
     try {
       const credentials = { idNumber, pin };
       const { user } = await login(credentials);
-      
+      console.log(user)
       // Redirect based on the role
       if (user.role === 'admin') {
         navigate('/admin-dash');

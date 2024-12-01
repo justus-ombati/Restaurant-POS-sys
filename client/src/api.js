@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://restrant-pos-server-bca59bfb00dd.herokuapp.com',
+  baseURL: 'https://restaurant-pos-server.onrender.com',
   
 });
 api.interceptors.request.use(config => {

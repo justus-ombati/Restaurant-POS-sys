@@ -26,6 +26,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+
 // Set up CORS
 const allowedOrigins = ['https://restrantpos.netlify.app'];
 

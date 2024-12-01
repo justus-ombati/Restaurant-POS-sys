@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await api.post('/user/login', credentials);
+      console.log(credentials)
       const { user, token } = response.data;
 
       setUser(user);
