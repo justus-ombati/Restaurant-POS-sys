@@ -28,22 +28,22 @@ const app = express();
 app.use(express.json());
 
 // Set up CORS
-// const allowedOrigins = ['https://resplendent-pasca-bd01b0.netlify.app'];
+const allowedOrigins = ['https://resplendent-pasca-bd01b0.netlify.app'];
 
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   credentials: true, // if you're sending cookies or need credentials
-// };
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // if you're sending cookies or need credentials
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-app.use(cors());
+// app.use(cors());
 
 //Routes
 app.use('/user', userRouter);
