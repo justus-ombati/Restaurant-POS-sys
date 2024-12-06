@@ -37,13 +37,13 @@ const FoodListPage = () => {
         setSpecialFoods(specialFoodsRes.data.data);
       } catch (error) {
         console.error('Error fetching foods:', error);
-        setError(error.message);
+        setError(error.message || "Could not fetch foods");
         setIsModalOpen(true);
       }
     };
 
   const handleViewItem = (foodId) => {
-    navigate(`/food/${foodId}`);
+    navigate(`/menu/${foodId}`);
   };
 
   const closeModal = () => {
@@ -74,7 +74,7 @@ const FoodListPage = () => {
         />
       )}
 
-      <Button type='add' label="Add New" onClick={() => navigate('/food/add-new-food')} style={{ float: 'right' }} />
+      <Button type='add' label="Add New" onClick={() => navigate('/menu/add-new-item')} style={{ float: 'right' }} />
       <div className="tabs">
         <Button
           className={activeTab === 'special' ? 'active' : ''}

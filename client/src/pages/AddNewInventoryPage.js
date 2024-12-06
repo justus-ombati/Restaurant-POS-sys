@@ -28,7 +28,7 @@ const AddNewIngredientPage = () => {
       });
     } catch (error) {
       console.error('Error adding ingredient:', error);
-      setError(error.response?.data?.message);
+      setError(error.message);
       setIsModalOpen(true);
     }
   };

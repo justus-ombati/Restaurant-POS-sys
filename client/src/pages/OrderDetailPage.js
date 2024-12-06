@@ -24,7 +24,7 @@ function OrderDetailPage() {
         setOrder(response.data.data);
       } catch (error) {
         console.error('Error fetching order:', error);
-        setError('Unauthorized. Please log in again.');
+        setError(error.message || 'Error fetching order');
         setIsModalOpen(true);
       }
     };

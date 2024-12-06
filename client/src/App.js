@@ -32,41 +32,6 @@ function App() {
     setUser(userData);
   };
 
-// Layout Components for each section
-const OrdersLayout = () => (
-  <div>
-    <h2>Orders</h2>
-    <Outlet />
-  </div>
-);
-
-const MenuLayout = () => (
-  <div>
-    <h2>Menu</h2>
-    <Outlet />
-  </div>
-);
-
-const InventoryLayout = () => (
-  <div>
-    <h2>Inventory</h2>
-    <Outlet />
-  </div>
-);
-
-const UsersLayout = () => (
-  <div>
-    <h2>Users</h2>
-    <Outlet />
-  </div>
-);
-
-const SalesLayout = () => (
-  <div>
-    <h2>Sales</h2>
-    <Outlet />
-  </div>
-);
 
 return (
   <AuthProvider>
@@ -79,40 +44,30 @@ return (
             <Route path="/" element={<LoginPage />} />
 
             {/* Orders Section */}
-            <Route path="orders" element={<OrdersLayout />}>
-              <Route index element={<OrderListPage />} />
-              <Route path="order-entry" element={<OrderEntryPage />} />
-              <Route path=":orderId" element={<OrderDetailPage />} />
-              <Route path="edit-order/:orderId" element={<EditOrderPage />} />
-            </Route>
+            <Route path="orders" element={<OrderListPage />} />
+            <Route path="order/order-entry" element={<OrderEntryPage />} />
+            <Route path="order/:orderId" element={<OrderDetailPage />} />
+            <Route path="order/edit-order/:orderId" element={<EditOrderPage />} />
 
             {/* Menu Section */}
-            <Route path="menu" element={<MenuLayout />}>
-              <Route index element={<FoodListPage />} />
-              <Route path="add-new-food" element={<AddNewFoodPage />} />
-              <Route path="menu-item-details/:foodId" element={<FoodItemDetailsPage />} />
-            </Route>
+            <Route path="menu" element={<FoodListPage />} />
+            <Route path="menu/add-new-item" element={<AddNewFoodPage />} />
+            <Route path="menu/:foodId" element={<FoodItemDetailsPage />} />
 
             {/* Inventory Section */}
-            <Route path="inventory" element={<InventoryLayout />}>
-              <Route index element={<InventoryListPage />} />
-              <Route path="add" element={<AddNewInventoryPage />} />
-              <Route path=":id" element={<InventoryDetailsPage />} />
-              <Route path="inventory-status" element={<InventoryStatusPage />} />
-            </Route>
+            <Route path="inventory" element={<InventoryListPage />} />
+            <Route path="inventory/add" element={<AddNewInventoryPage />} />
+            <Route path="inventory/:id" element={<InventoryDetailsPage />} />
+            <Route path="inventory/inventory-status" element={<InventoryStatusPage />} />
 
             {/* Users Section */}
-            <Route path="users" element={<UsersLayout />}>
-              <Route index element={<UserListPage />} />
-              <Route path="create-user" element={<CreateUserPage />} />
-              <Route path=":id" element={<UserDetailsPage />} />
-            </Route>
+            <Route path="users" element={<UserListPage />} />
+            <Route path="users/create-user" element={<CreateUserPage />} />
+            <Route path="users/:id" element={<UserDetailsPage />} />
 
             {/* Sales Section */}
-            <Route path="sales" element={<SalesLayout />}>
-              <Route index element={<SalesReportPage />} />
-              <Route path="/:saleId" element={<SaleDetailsPage />} />
-            </Route>
+            <Route path="sales" element={<SalesReportPage />} />
+            <Route path="sales/:saleId" element={<SaleDetailsPage />} />
 
             {/* Additional Routes */}
             <Route path="/admin-dash" element={<AdminDashboard />} />

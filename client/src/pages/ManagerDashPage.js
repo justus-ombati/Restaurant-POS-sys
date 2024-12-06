@@ -105,7 +105,7 @@ const ManagerDashboard = () => {
           ))}
         </tbody>
       </table>
-      <button onClick={() => navigate('/ingredient')}>Manage Inventory</button>
+      <button onClick={() => navigate('/inventory')}>Manage Inventory</button>
 
       <h2>Orders</h2>
       <table>

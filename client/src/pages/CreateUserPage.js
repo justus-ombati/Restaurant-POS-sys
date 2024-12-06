@@ -47,7 +47,7 @@ const CreateUserPage = () => {
       navigate('/users');
     } catch (error) {
       console.error('Error creating user:', error);
-      setError(error.response?.data?.message || 'Failed to create new user');
+      setError(error.message || 'Failed to create new user');
     }
   };
 

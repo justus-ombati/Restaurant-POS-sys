@@ -24,7 +24,7 @@ const SaleDetailsPage = () => {
         setSaleDetails(response.data);
       } catch (error) {
         console.error('Error fetching sale details:', error);
-        setError(error.response?.data?.message || 'Failed to fetch sale details');
+        setError(error.message || 'Failed to fetch sale details');
         setIsModalOpen(true);
       } finally {
         setIsLoading(false);

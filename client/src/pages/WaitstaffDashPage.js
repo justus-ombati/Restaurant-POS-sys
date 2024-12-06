@@ -29,7 +29,7 @@ const WaitstaffDashboard = () => {
         setOrders(response.data.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
-        setError(error.response?.data?.message || 'Error fetching orders');
+        setError(error.message || 'Error fetching orders');
         setIsModalOpen(true);      }
     };
 
@@ -78,7 +78,7 @@ const WaitstaffDashboard = () => {
       )}
 
       <h2>Order Management</h2>
-      <button onClick={() => navigate('/order')}>Create Order</button>
+      <button onClick={() => navigate('/order/order-entry')}>Create Order</button>
       <select id="statusFilter" value={statusFilter} onChange={handleStatusChange}>
         <option value="All">All</option>
         <option value="Pending">Pending</option>

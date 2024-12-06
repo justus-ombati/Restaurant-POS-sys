@@ -34,7 +34,7 @@ const Header = () => {
               <li><Link to="/manager-dash">Dashboard</Link></li>
               <li><Link to="/sales">Sales</Link></li>
               <li><Link to="/orders">Orders</Link></li>
-              <li><Link to="/ingredients">Inventory</Link></li>
+              <li><Link to="/inventory">Inventory</Link></li>
               <li><Link to="/menu">Menu</Link></li>
               <Button type="view" label="Logout" onClick={handleLogout} />
             </>
@@ -43,7 +43,7 @@ const Header = () => {
             <>
               <li><Link to="/kitchen-dash">Dashboard</Link></li>
               <li><Link to="/orders">Orders</Link></li>
-              <li><Link to="/ingredients">Inventory</Link></li>
+              <li><Link to="/inventory">Inventory</Link></li>
               <Button type="view" label="Logout" onClick={handleLogout} />
             </>
           )}
@@ -51,7 +51,7 @@ const Header = () => {
             <>
               <li><Link to="/waitstaff-dash">Dashboard</Link></li>
               <li><Link to="/orders">Orders</Link></li>
-              <li><Link to="/ingredients">Inventory</Link></li>
+              <li><Link to="/inventory">Inventory</Link></li>
               <li><Link to="/menu">Menu</Link></li>
               <Button type="view" label="Logout" onClick={handleLogout} />
             </>

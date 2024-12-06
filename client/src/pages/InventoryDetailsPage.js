@@ -32,7 +32,7 @@ const IngredientDetailsPage = () => {
         setPricePerUnit(response.data.data.pricePerUnit);
       } catch (error) {
         console.error('Error fetching ingredient:', error);
-        setError(error.response?.data?.message || 'Failed to fetch ingredient');
+        setError(error.message || 'Failed to fetch ingredient');
         setIsModalOpen(true);
     };
   }
@@ -80,7 +80,7 @@ const IngredientDetailsPage = () => {
       setIngredient(response.data.data);
     } catch (error) {
       console.error('Error updating ingredient:', error);
-      setError(error.response?.data?.message || 'Failed to update ingredient');
+      setError(error.message || 'Failed to update ingredient');
       setIsModalOpen(true);
     }
   };

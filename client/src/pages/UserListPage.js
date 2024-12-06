@@ -22,7 +22,7 @@ const UserListPage = () => {
         setUsers(response.data.data);
       } catch (error) {
         console.error('Error fetching users:', error);
-        setError(error.response?.data?.message || 'Failed to fetch users');
+        setError(error.message || 'Failed to fetch users');
         setIsModalOpen(true);
       } finally {
         setIsLoading(false);

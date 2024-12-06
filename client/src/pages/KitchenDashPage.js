@@ -60,7 +60,7 @@ const KitchenStaffDashboard = () => {
 
   const handleConfirmOrder = async(orderId) => {
     try {
-      const response = await api.patch(`/order/confirm/${orderId}`);
+      const response = await api.patch(`/order/confirmOrder/${orderId}`);
       setSuccess('Order confirmed');
       setIsModalOpen(true);
       setOrders((prevOrders) =>
@@ -122,7 +122,7 @@ const KitchenStaffDashboard = () => {
                 {order.status === 'Pending' && 
                   <Button type='accept' label='Accept' onClick={() => handleConfirmOrder(order._id)}/>}
                 {(order.status === 'In Preparation' || order.status === 'Cancelled') &&
-                  <Button type='view' label='View' onClick={() => navigate(`/order/${order.id}`)}/>}
+                  <Button type='view' label='View' onClick={() => navigate(`/order/${order._id}`)}/>}
               </td>
             </tr>
           ))}

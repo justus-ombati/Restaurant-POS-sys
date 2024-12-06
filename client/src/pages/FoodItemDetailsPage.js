@@ -104,7 +104,7 @@ const FoodItemDetailsPage = () => {
       setSuccess('Food item updated successfully!');
       setIsModalOpen(true);
     } catch (error) {
-      setError('An error occurred while updating the food item');
+      setError(error.message || 'An error occurred while updating the food item');
       setIsModalOpen(true);
     }
   };

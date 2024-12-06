@@ -30,7 +30,7 @@ function OrderEntryPage() {
         setSpecialFoods(Array.isArray(specialFoodsRes.data.data) ? specialFoodsRes.data.data : []);
       } catch (error) {
         console.error('Error fetching foods:', error);
-        setError('Error fetching foods');
+        setError(error.message || 'Error fetching foods');
         setIsModalOpen(true);
       }
     };
@@ -93,7 +93,7 @@ function OrderEntryPage() {
       document.querySelectorAll('input[type=checkbox]').forEach(checkbox => checkbox.checked = false);
     } catch (error) {
       console.error('Error creating order:', error);
-      setError('Error creating order');
+      setError(error.message || 'Error creating order');
       setIsModalOpen(true);
     }
   };

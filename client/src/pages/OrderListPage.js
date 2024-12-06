@@ -29,7 +29,7 @@ function OrderListPage() {
         }
       } catch (error) {
         console.error('Error fetching orders:', error);
-        setError('Error fetching orders!');
+        setError(error.message || 'Error fetching orders!');
         setIsModalOpen(true);
       }
     };
@@ -54,7 +54,7 @@ function OrderListPage() {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error cancelling order:', error);
-      setError('Failed to cancel order. Please try again.');
+      setError(error.message || 'Failed to cancel order. Please try again.');
       setIsModalOpen(true);
     }
   };
@@ -68,7 +68,7 @@ function OrderListPage() {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error completing preparation:', error);
-      setError('Failed to complete preparation. Please try again.');
+      setError(error.message || 'Failed to complete preparation. Please try again.');
       setIsModalOpen(true);
     }
   };
@@ -82,7 +82,7 @@ function OrderListPage() {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error confirming order:', error);
-      setError('Failed to confirm order. Please try again.');
+      setError(error.message || 'Failed to confirm order. Please try again.');
       setIsModalOpen(true);
     }
   };
@@ -96,7 +96,7 @@ function OrderListPage() {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error completing payment:', error);
-      setError('Failed to complete payment. Please try again.');
+      setError(error.message || 'Failed to complete payment. Please try again.');
       setIsModalOpen(true);
     }
   };

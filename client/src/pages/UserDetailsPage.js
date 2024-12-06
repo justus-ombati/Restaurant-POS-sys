@@ -25,7 +25,7 @@ const UserDetailsPage = () => {
         setUserData(response.data.data);
       } catch (error) {
         console.error('Error fetching user:', error);
-        setError(error.response?.data?.message || 'Failed to fetch user details');
+        setError(error.message || 'Failed to fetch user details');
         setIsModalOpen(true);
       }
     };
@@ -62,7 +62,7 @@ const UserDetailsPage = () => {
       navigate('/user');
     } catch (error) {
       console.error('Error updating user:', error);
-      setError(error.response?.data?.message || 'Failed to update user details');
+      setError(error.message || 'Failed to update user details');
       setIsModalOpen(true)
     }
   };
