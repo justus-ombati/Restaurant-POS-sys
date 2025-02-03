@@ -252,7 +252,7 @@ const EditOrderPage = () => {
         </div>
         <div className="form-group">
           <label>Total Amount:</label>
-          <span>${totalAmount.toFixed(2)}</span>
+          <span>Ksh{totalAmount.toFixed(2)}</span>
         </div>
         <Button type="save" label="Update Order" onClick={handleSubmit}/>
       </form>

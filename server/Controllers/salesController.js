@@ -34,8 +34,10 @@ exports.addSale = asyncErrorHandler(async (req, res, next) => {
 
 // Get all sales data for a specific date
 exports.getAllSales = asyncErrorHandler(async (req, res, next) => {
-  const { date } = req.query;
+  console.log("Reached sales endpoint")
 
+  const { date } = req.query;
+  console.log(date)
   if (!date) {
     return next(new CustomError('Date query parameter is required', 400));
   }

@@ -3,6 +3,7 @@ const Order = require('../Models/orderModel');
 const Food = require('../Models/foodModel');
 const SpecialFood = require('../Models/specialFoodModel');
 const Ingredient = require('../Models/ingredientModel');
+const Sale = require('../Models/salesModel');
 const asyncErrorHandler = require('../Utils/asyncErrorHandler');
 const CustomError = require('../Utils/customError');
 
@@ -228,29 +229,46 @@ exports.completePrep = asyncErrorHandler(async (req, res, next) => {
 });
 
 exports.completePayment = asyncErrorHandler(async (req, res, next) => {
-  const { id } = req.params;
+  console.log("Complete payment endpoint reached. Order ID:", req.params.id);
+  const id = req.params.id;
 
-  // Find the order by ID
-  const order = await Order.findById(id).populate('items.item');
+  // Validate order ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new CustomError('Invalid Order ID', 400));
+  }
 
+  // Find the order
+  const order = await Order.findById(id);
   if (!order) {
-    return next(new CustomError('Order not found!', 404));
-  }
-  if (order.status === 'Cancelled'){
-    return next(new CustomError('Payment cannot be completed. Order is already cancelled ', 400))
-  }
-  if (order.status === 'Completed'){
-    return next(new CustomError('Order is payment is already completed!', 400))
+    return next(new CustomError('Order not found', 404));
   }
 
-  // Update the order status to 'Ready'
+  // Check if the order is already completed
+  if (order.status === 'Completed') {
+    return next(new CustomError('Order is already completed', 400));
+  }
+
+  // Mark the order as completed
   order.status = 'Completed';
   await order.save();
+
+  // Check if the sale already exists
+  const existingSale = await Sale.findOne({ orderId: id });
+  if (existingSale) {
+    return next(new CustomError('Order already processed as sale', 400));
+  }
+
+  // Create a new sale
+  const newSale = new Sale({
+    orderId: id,
+    totalAmount: order.totalAmount,
+  });
+  await newSale.save();
 
   res.status(200).json({
     status: 'success',
     message: 'Order payment completed successfully!',
-    data: order
+    data: order,
   });
 });
 

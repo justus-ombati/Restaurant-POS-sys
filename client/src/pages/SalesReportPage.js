@@ -32,7 +32,7 @@ const SalesReportPage = () => {
         console.log(salesData)
       } catch (error) {
         console.error('Error fetching sales data:', error);
-        setError(error.message || 'Failed to fetch sales data');
+        setError(error.response.message || 'Failed to fetch sales data');
         setIsModalOpen(true);
       } finally {
         setIsLoading(false);

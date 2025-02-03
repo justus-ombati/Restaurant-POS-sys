@@ -78,7 +78,7 @@ function OrderEntryPage() {
         quantity: item.quantity,
       })),
       customerName,
-      tableNumber,
+      tableNumber: Number(tableNumber), // Convert to a number here
     };
 
     try {
@@ -129,7 +129,7 @@ function OrderEntryPage() {
         <div className="form-group">
           <label htmlFor="tableNumber">Table Number:</label>
           <input
-            type="text"
+            type="number"
             id="tableNumber"
             value={tableNumber}
             onChange={(e) => setTableNumber(e.target.value)}

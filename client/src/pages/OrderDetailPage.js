@@ -15,20 +15,19 @@ function OrderDetailPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const fetchOrder = async () => {
+    try {
+      const response = await api.get(`/order/${orderId}`);
+      console.log('Order Response:', response.data);
+      setOrder(response.data.data);
+    } catch (error) {
+      console.error('Error fetching order:', error);
+      setError(error.message || 'Error fetching order');
+      setIsModalOpen(true);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        const response = await api.get(`/order/${orderId}`);
-
-        console.log('Order Response:', response.data);
-        setOrder(response.data.data);
-      } catch (error) {
-        console.error('Error fetching order:', error);
-        setError(error.message || 'Error fetching order');
-        setIsModalOpen(true);
-      }
-    };
-
     fetchOrder();
   }, [orderId]);
 
@@ -82,18 +81,19 @@ function OrderDetailPage() {
   };
 
   const handleCompletePayment = async () => {
+    console.log('OrderId before payment API call:', orderId); // Debug
     try {
       const response = await api.patch(`/order/completePayment/${orderId}`);
       console.log('Payment completed successfully:', response.data);
       setSuccess('Payment completed successfully!');
       setIsModalOpen(true);
-      setOrder(response.data.data);
+      fetchOrder(); // Refresh data after successful update
     } catch (error) {
       console.error('Error completing payment:', error);
       setError('Failed to complete payment. Please try again.');
       setIsModalOpen(true);
     }
-  };
+  }; 
 
   if (!order) {
     return <div>Order Unavailable...</div>;
@@ -151,7 +151,7 @@ function OrderDetailPage() {
       </div>
       <div className="order-actions">
         {user.role === 'waitstaff' && (order.status === 'Pending' || order.status === 'In Preparation') &&
-            <Button type="edit" label="Edit Order" onClick={() => navigate(`/editOrder/${orderId}`)} />
+            <Button type="edit" label="Edit Order" onClick={() => navigate(`/order/edit-order/${orderId}`)} />
         }
         {user.role === 'kitchen' && order.status === 'Pending' && (
           <>

@@ -167,7 +167,7 @@ const SpecialFoodDetails = ({
                     checked={ingredients.some(i => i.ingredient._id === ingredient._id)}
                     onChange={() => handleToggleIngredient(ingredient._id)}
                   />
-                  {ingredient.name} - ${ingredient.pricePerUnit.toFixed(2)}
+                  {ingredient.name} - Ksh{ingredient.pricePerUnit.toFixed(2)}
                 </label>
               </li>
             ))}
