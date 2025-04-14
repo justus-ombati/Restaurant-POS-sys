@@ -17,14 +17,6 @@ const FoodListPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-  useEffect(() => {
-    if (!user || user.role !== 'manager') {
-      navigate('/');
-    } else {
-      fetchFoods();
-    }
-  }, [user, navigate]);
-
   const fetchFoods = async () => {
     try {
         const [foodsRes, specialFoodsRes] = await Promise.all([
@@ -41,6 +33,15 @@ const FoodListPage = () => {
         setIsModalOpen(true);
       }
     };
+
+  useEffect(() => {
+    if (!user || user.role === 'kitchen') {
+      setError("You are not Authorized to access this menu page")
+      navigate('/');
+    } else {
+      fetchFoods();
+    }
+  }, [user, navigate]);
 
   const handleViewItem = (foodId) => {
     navigate(`/menu/${foodId}`);

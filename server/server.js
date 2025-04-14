@@ -28,20 +28,20 @@ const app = express();
 app.use(express.json());
 
 // Set up CORS
-// const allowedOrigins = ['https://resplendent-pasca-bd01b0.netlify.app'];
+const allowedOrigins = ['https://nicksrestaurantpos.netlify.app'];
 
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   credentials: true, // if you're sending cookies or need credentials
-// };
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // if you're sending cookies or need credentials
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(cors());
 
@@ -67,14 +67,38 @@ app.all('*', (req, res, next) => {
 app.use(globalErrorHandler);
 
 // Connect to MongoDB and start the server
-mongoose.connect(process.env.LOCAL_CONN_STR, { useNewUrlParser: true, useUnifiedTopology: true })
+// mongoose.connect(process.env.LOCAL_CONN_STR, { useNewUrlParser: true, useUnifiedTopology: true })
+//     .then(() => {
+//         console.log('Connected to MongoDB');
+
+//         // Start the server
+//         const PORT = process.env.PORT || 5001;
+//         const server = app.listen(PORT, () => {
+//             console.log(`Server is running on http://localhost:${PORT}`);
+//         });
+
+//         // Handling unhandled rejections
+//         process.on('unhandledRejection', (err) => {
+//             console.error('Unhandled Rejection:', err.name, err.message);
+//             console.error('Shutting down due to unhandled rejection...');
+//             server.close(() => {
+//                 process.exit(1);
+//             });
+//         });
+//     })
+//     .catch((err) => {
+//         console.error('Failed to connect to MongoDB:', err);
+//     });
+
+    //deployment mongo db connection
+    mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to MongoDB');
 
         // Start the server
         const PORT = process.env.PORT || 5001;
         const server = app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+            console.log(`Server is running on https://restaurant-pos-server.onrender.com`);
         });
 
         // Handling unhandled rejections
