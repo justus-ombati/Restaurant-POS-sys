@@ -21,7 +21,7 @@ const KitchenStaffDashboard = () => {
             });
         console.log('Orders Response:', response.data);
         setOrders(response.data.data);
-
+        console.log(response)
         if (response.data.totalOrders === 0) {
             return <div> no orders to show </div>
         }
@@ -107,6 +107,7 @@ const KitchenStaffDashboard = () => {
         <thead>
           <tr>
             <th>Order ID</th>
+            <th>Customer Name</th>
             <th>Total Amount</th>
             <th>Status</th>
             <th>Actions</th>
@@ -116,11 +117,12 @@ const KitchenStaffDashboard = () => {
           {displayedOrders.map((order) => (
             <tr key={order._id}>
               <td>{order._id}</td>
+              <td>{order.customerName}</td>
               <td>{order.totalAmount}</td>
               <td>{order.status}</td>
               <td>
                 {order.status === 'Pending' && 
-                  <Button type='accept' label='Accept' onClick={() => handleConfirmOrder(order._id)}/>}
+                  <Button type='view' label='View' onClick={() => navigate(`/order/${order._id}`)}/>}
                 {(order.status === 'In Preparation' || order.status === 'Cancelled') &&
                   <Button type='view' label='View' onClick={() => navigate(`/order/${order._id}`)}/>}
               </td>

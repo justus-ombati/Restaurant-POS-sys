@@ -93,7 +93,7 @@ function OrderDetailPage() {
       setError('Failed to complete payment. Please try again.');
       setIsModalOpen(true);
     }
-  }; 
+  };
 
   if (!order) {
     return <div>Order Unavailable...</div>;

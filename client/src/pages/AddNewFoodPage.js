@@ -35,8 +35,11 @@ const AddNewFoodPage = () => {
   }, []);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFoodItem((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    setFoodItem((prev) => ({
+      ...prev,
+      [name]: type === 'number' ? Number(value) : value
+    }));
   };
 
   const handleIngredientChange = (index, field, value) => {
@@ -49,18 +52,29 @@ const AddNewFoodPage = () => {
     const existingIndex = foodItem.ingredients.findIndex(
       (ingredient) => ingredient.ingredient === ingredientId
     );
-
+  
     if (existingIndex !== -1) {
-      const updatedIngredients = foodItem.ingredients.filter((ingredient) => ingredient.ingredient !== ingredientId);
+      const updatedIngredients = foodItem.ingredients.filter(
+        (ingredient) => ingredient.ingredient !== ingredientId
+      );
       setFoodItem((prev) => ({ ...prev, ingredients: updatedIngredients }));
     } else {
       const selectedIngredient = availableIngredients.find(
         (ingredient) => ingredient._id === ingredientId
       );
-      setFoodItem((prev) => ({
-        ...prev,
-        ingredients: [...prev.ingredients, { ingredient: selectedIngredient._id, quantity: 1, pricePerUnit: selectedIngredient.pricePerUnit }]
-      }));
+  
+      if (selectedIngredient) {
+        const newIngredient = {
+          ingredient: selectedIngredient._id,
+          quantity: 1,
+          pricePerUnit: selectedIngredient.pricePerUnit
+        };
+        console.log('Adding ingredient:', newIngredient);
+        setFoodItem((prev) => ({
+          ...prev,
+          ingredients: [...prev.ingredients, newIngredient]
+        }));
+      }
     }
   };
 
@@ -85,20 +99,75 @@ const AddNewFoodPage = () => {
     }, 0);
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (foodItem.ingredients.length === 0) {
+  //     setError('Please select at least one ingredient.');
+  //     setIsModalOpen(true);
+  //     return;
+  //   }
+
+  //   const endpoint = foodItem.type === 'special' ? '/specialFood' : '/food';
+  //   const payload = {
+  //     name: foodItem.name,
+  //     type: foodItem.type,
+  //     ingredients: foodItem.ingredients,
+  //     cost: calculateCost(),
+  //     sellingPrice: foodItem.sellingPrice,
+  //     ...(foodItem.type === 'special' && { origin: foodItem.origin, description: foodItem.description, steps: foodItem.steps })
+  //   };
+
+  //   try {
+  //     const response = await api.post(endpoint, payload);
+  //     setFoodItem({
+  //       name: '',
+  //       type: 'regular',
+  //       ingredients: [],
+  //       cost: 0,
+  //       sellingPrice: 0,
+  //       origin: '',
+  //       description: '',
+  //       steps: ['']
+  //     });
+  //     setSuccess('Menu item added successfully!');
+  //     setIsModalOpen(true);
+  //   } catch (error) {
+  //     console.error('Error creating food item:', error);
+  //     setError(error.message);
+  //     setIsModalOpen(true);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const endpoint = foodItem.type === 'special' ? '/specialFood' : '/food';
+    const calculatedCost = calculateCost();
+  
     const payload = {
       name: foodItem.name,
       type: foodItem.type,
       ingredients: foodItem.ingredients,
-      cost: calculateCost(),
+      cost: calculatedCost,
       sellingPrice: foodItem.sellingPrice,
-      ...(foodItem.type === 'special' && { origin: foodItem.origin, description: foodItem.description, steps: foodItem.steps })
+      ...(foodItem.type === 'special' && {
+        origin: foodItem.origin,
+        description: foodItem.description,
+        steps: foodItem.steps
+      })
     };
-
+  
+    console.log('Submitting payload:', payload);
+  
+    // prevent if required fields are missing
+    if (!payload.name || !payload.type || !payload.sellingPrice || payload.ingredients.length === 0) {
+      setError('Missing required fields');
+      setIsModalOpen(true);
+      return;
+    }
+  
     try {
       const response = await api.post(endpoint, payload);
+      console.log('Response:', response.data);
       setFoodItem({
         name: '',
         type: 'regular',
@@ -113,11 +182,10 @@ const AddNewFoodPage = () => {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error creating food item:', error);
-      setError(error.message);
+      setError(error?.response?.data?.message || error.message);
       setIsModalOpen(true);
     }
   };
-
   const closeModal = () => {
     setTimeout(() => {
       setIsModalOpen(false);
@@ -220,7 +288,7 @@ const AddNewFoodPage = () => {
                   </td>
                   <td>{ingredient.pricePerUnit}</td>
                   <td>
-                    <Button type="remove" label="Remove" onClick={handleToggleIngredient(ingredient.ingredient)} />
+                    <Button type="remove" label="Remove" onClick={() => handleToggleIngredient(ingredient.ingredient)} />
                   </td>
                 </tr>
               ))}
